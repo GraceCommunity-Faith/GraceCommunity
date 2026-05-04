@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grace Community — Design Cheat Sheet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Josefin Sans', sans-serif; background: #1a1a1a; color: #eee; display: flex; height: 100vh; overflow: hidden; }
+
+    /* ── PANEL ── */
+    #panel {
+      width: 320px; min-width: 320px;
+      background: #111; border-right: 1px solid #333;
+      overflow-y: auto; padding: 1.2rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+    #panel h1 { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: #C4A580; margin-bottom: 0.5rem; }
+    .section-label {
+      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: #888; margin-top: 0.8rem; margin-bottom: 0.3rem;
+      border-top: 1px solid #2a2a2a; padding-top: 0.7rem;
+    }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.35rem; }
+    .row label { font-size: 0.65rem; color: #aaa; letter-spacing: 0.08em; white-space: nowrap; }
+    .row input[type=range] { flex: 1; accent-color: #C4A580; }
+    .row input[type=color] { width: 36px; height: 24px; border: none; border-radius: 4px; cursor: pointer; background: none; padding: 0; }
+    .row .val { font-size: 0.6rem; color: #666; width: 36px; text-align: right; }
+
+    .copy-btn {
+      margin-top: 1rem;
+      background: #2A5C3F; color: #F5EAD7;
+      border: none; padding: 0.7rem 1rem;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      cursor: pointer; width: 100%; transition: background 0.2s;
+    }
+    .copy-btn:hover { background: #3A7A56; }
+    .copy-btn.copied { background: #8B1A1A; }
+
+    /* ── PREVIEW ── */
+    #preview {
+      flex: 1; overflow: hidden; position: relative;
+    }
+    #preview-inner {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center;
+      background: #2A5C3F;
+      padding: 2rem;
+      position: relative;
+    }
+    .prev-eyebrow {
+      font-family: 'Josefin Sans', sans-serif;
+      letter-spacing: 0.3em; text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .prev-grace {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .prev-community {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.32em;
+    }
+    .prev-vision-wrap {
+      margin-top: 2rem;
+      max-width: 600px;
+      padding: 1.5rem 2rem;
+      background: rgba(245,234,215,0.08);
+      border-left: 3px solid #8B1A1A;
+    }
+    .prev-vision-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic; font-weight: 300;
+      line-height: 1.6;
+    }
+    .prev-vision-body {
+      font-family: 'Crimson Pro', serif;
+      margin-top: 0.8rem;
+      opacity: 0.8;
+      line-height: 1.7;
+    }
+    .prev-nav {
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 56px;
+      background: rgba(245,234,215,0.95);
+      display: flex; align-items: center; justify-content: flex-end;
+      padding: 0 1.5rem;
+      gap: 1.5rem;
+    }
+    .prev-nav span {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    }
+    .prev-nav-cta {
+      background: #8B1A1A; color: white;
+      padding: 0.4rem 0.9rem;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .prev-section-label {
+      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 0.4rem;
+    }
+    .prev-service-grid {
+      display: flex; gap: 1px; margin-top: 1.5rem; background: rgba(255,255,255,0.05);
+    }
+    .prev-service-card {
+      padding: 1rem 1.5rem; text-align: center; background: rgba(255,255,255,0.04);
+      min-width: 100px;
+    }
+    .prev-service-name { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.1rem; }
+    .prev-service-time { font-family: 'Josefin Sans', sans-serif; font-size: 0.65rem; letter-spacing: 0.1em; opacity: 0.7; }
+
+    /* tab nav */
+    .tab-bar { display: flex; gap: 0; border-bottom: 1px solid #222; margin-bottom: 0.5rem; }
+    .tab { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.4rem 0.6rem; cursor: pointer; color: #666; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+    .tab.active { color: #C4A580; border-bottom-color: #C4A580; }
+  </style>
+</head>
+<body>
+
+<!-- CONTROL PANEL -->
+<div id="panel">
+  <h1>⚙ Design Controls</h1>
+
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab('colors')">Colors</div>
+    <div class="tab" onclick="switchTab('sizes')">Sizes</div>
+    <div class="tab" onclick="switchTab('preview')">Preview Mode</div>
+  </div>
+
+  <!-- COLORS TAB -->
+  <div id="tab-colors">
+    <div class="section-label">Brand Colors</div>
+    <div class="row"><label>Pine (primary green)</label><input type="color" id="c-pine" value="#2A5C3F" oninput="apply()"/></div>
+    <div class="row"><label>Pine Dark (nav bg, sections)</label><input type="color" id="c-pine-dk" value="#1C3D2A" oninput="apply()"/></div>
+    <div class="row"><label>Crimson (accents, CTA)</label><input type="color" id="c-crimson" value="#8B1A1A" oninput="apply()"/></div>
+    <div class="row"><label>Cream (logo bg, body bg)</label><input type="color" id="c-cream" value="#F5EAD7" oninput="apply()"/></div>
+    <div class="row"><label>Sand (eyebrows, accents)</label><input type="color" id="c-sand" value="#C4A580" oninput="apply()"/></div>
+    <div class="row"><label>Off-White (page bg)</label><input type="color" id="c-offwhite" value="#FAF5EE" oninput="apply()"/></div>
+
+    <div class="section-label">Hero Text Colors</div>
+    <div class="row"><label>Eyebrow (ST. AUGUSTINE)</label><input type="color" id="c-eyebrow" value="#ffffff" oninput="apply()"/></div>
+    <div class="row"><label>GRACE</label><input type="color" id="c-grace" value="#F5EAD7" oninput="apply()"/></div>
+    <div class="row"><label>Community Church</label><input type="color" id="c-community" value="#ffffff" oninput="apply()"/></div>
+
+    <div class="section-label">Vision Section</div>
+    <div class="row"><label>Quote text</label><input type="color" id="c-quote" value="#1C3D2A" oninput="apply()"/></div>
+    <div class="row"><label>Body text</label><input type="color" id="c-body" value="#3D2E1E" oninput="apply()"/></div>
+  </div>
+
+  <!-- SIZES TAB -->
+  <div id="tab-sizes" style="display:none">
+    <div class="section-label">Hero Typography</div>
+    <div class="row"><label>Eyebrow size</label><input type="range" id="s-eyebrow" min="8" max="18" value="11" oninput="apply(); this.nextElementSibling.textContent=this.value+'px'"/><span class="val">11px</span></div>
+    <div class="row"><label>GRACE size</label><input type="range" id="s-grace" min="40" max="160" value="96" oninput="apply(); this.nextElementSibling.textContent=this.value+'px'"/><span class="val">96px</span></div>
+    <div class="row"><label>Community Church</label><input type="range" id="s-community" min="10" max="48" value="22" oninput="apply(); this.nextElementSibling.textContent=this.value+'px'"/><span class="val">22px</span></div>
+    <div class="row"><label>Letter spacing — GRACE</label><input type="range" id="s-grace-ls" min="0" max="60" value="18" oninput="apply(); this.nextElementSibling.textContent=this.value+'%'"/><span class="val">18%</span></div>
+    <div class="row"><label>Letter spacing — Comm.</label><input type="range" id="s-comm-ls" min="0" max="80" value="32" oninput="apply(); this.nextElementSibling.textContent=this.value+'%'"/><span class="val">32%</span></div>
+
+    <div class="section-label">Vision Section</div>
+    <div class="row"><label>Quote font size</label><input type="range" id="s-quote" min="14" max="40" value="22" oninput="apply(); this.nextElementSibling.textContent=this.value+'px'"/><span class="val">22px</span></div>
+    <div class="row"><label>Body font size</label><input type="range" id="s-body" min="12" max="28" value="17" oninput="apply(); this.nextElementSibling.textContent=this.value+'px'"/><span class="val">17px</span></div>
+
+    <div class="section-label">Service Cards</div>
+    <div class="row"><label>Card title size</label><input type="range" id="s-card-title" min="12" max="32" value="20" oninput="apply(); this.nextElementSibling.textContent=this.value+'px'"/><span class="val">20px</span></div>
+    <div class="row"><label>Card time size</label><input type="range" id="s-card-time" min="8" max="20" value="12" oninput="apply(); this.nextElementSibling.textContent=this.value+'px'"/><span class="val">12px</span></div>
+  </div>
+
+  <!-- PREVIEW MODE TAB -->
+  <div id="tab-preview" style="display:none">
+    <div class="section-label">Preview Section</div>
+    <div class="row" style="flex-direction:column; align-items:flex-start; gap:0.4rem">
+      <label style="cursor:pointer"><input type="radio" name="pv" value="hero" checked onchange="switchPreview(this.value)"/> Hero</label>
+      <label style="cursor:pointer"><input type="radio" name="pv" value="vision" onchange="switchPreview(this.value)"/> Vision / Quote</label>
+      <label style="cursor:pointer"><input type="radio" name="pv" value="services" onchange="switchPreview(this.value)"/> Service Times</label>
+    </div>
+  </div>
+
+  <button class="copy-btn" onclick="copyCSS()">📋 Copy CSS Variables</button>
+  <div id="copy-out" style="font-size:0.6rem; color:#666; margin-top:0.5rem; word-break:break-all; display:none;"></div>
+</div>
+
+<!-- LIVE PREVIEW -->
+<div id="preview">
+  <!-- HERO PREVIEW -->
+  <div id="pv-hero" id="preview-inner" style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3rem 2rem;position:relative;">
+    <div class="prev-nav">
+      <span id="pv-nav-link" style="color:#2A5C3F;">Our Vision</span>
+      <span id="pv-nav-link2" style="color:#2A5C3F;">Worship</span>
+      <span id="pv-nav-link3" style="color:#2A5C3F;">Ministries</span>
+      <div class="prev-nav-cta" id="pv-cta">Get In Touch</div>
+    </div>
+    <p class="prev-eyebrow" id="pv-eyebrow">St. Augustine, Florida</p>
+    <div style="display:flex;flex-direction:column;align-items:center;">
+      <div class="prev-grace" id="pv-grace">GRACE</div>
+      <div class="prev-community" id="pv-community">Community Church</div>
+    </div>
+    <div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;">
+      <div id="pv-btn1" style="padding:0.8rem 1.8rem;font-family:'Josefin Sans',sans-serif;font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;">Join Us Sunday</div>
+      <div id="pv-btn2" style="padding:0.8rem 1.8rem;font-family:'Josefin Sans',sans-serif;font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;border:2px solid rgba(245,234,215,0.5);color:#F5EAD7;">Our Mission</div>
+    </div>
+  </div>
+
+  <!-- VISION PREVIEW -->
+  <div id="pv-vision" style="display:none;width:100%;height:100%;align-items:center;justify-content:center;padding:3rem;position:relative;">
+    <div class="prev-vision-wrap" id="pv-vwrap">
+      <p class="prev-section-label" id="pv-vlabel">Our Vision</p>
+      <blockquote class="prev-vision-quote" id="pv-quote">"Led by the Holy Spirit with one hand toward God and the other toward people."</blockquote>
+      <p class="prev-vision-body" id="pv-vbody">We commit ourselves to be used by God to encourage and restore people who have never experienced the presence and power of the gospel of Jesus Christ.</p>
+    </div>
+  </div>
+
+  <!-- SERVICES PREVIEW -->
+  <div id="pv-services" style="display:none;width:100%;height:100%;flex-direction:column;align-items:center;justify-content:center;padding:3rem;">
+    <p class="prev-section-label" id="pv-slabel">Come as you are</p>
+    <div style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:2.2rem;margin-bottom:0.5rem;" id="pv-stitle">Worship &amp; <em>Gatherings</em></div>
+    <div class="prev-service-grid">
+      <div class="prev-service-card"><div class="prev-service-name" id="pv-sn1">Sunday School</div><div class="prev-service-time" id="pv-st1">9:45 AM</div></div>
+      <div class="prev-service-card"><div class="prev-service-name" id="pv-sn2">Worship Service</div><div class="prev-service-time" id="pv-st2">11:00 AM</div></div>
+      <div class="prev-service-card"><div class="prev-service-name" id="pv-sn3">Evening Study</div><div class="prev-service-time" id="pv-st3">6:00 PM</div></div>
+      <div class="prev-service-card"><div class="prev-service-name" id="pv-sn4">Evening Study</div><div class="prev-service-time" id="pv-st4">7:00 PM</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentPreview = 'hero';
+
+  function switchTab(t) {
+    ['colors','sizes','preview'].forEach(id => {
+      document.getElementById('tab-'+id).style.display = id===t ? '' : 'none';
+    });
+    document.querySelectorAll('.tab').forEach((el,i) => {
+      el.classList.toggle('active', ['colors','sizes','preview'][i]===t);
+    });
+  }
+
+  function switchPreview(v) {
+    currentPreview = v;
+    ['hero','vision','services'].forEach(id => {
+      const el = document.getElementById('pv-'+id);
+      el.style.display = id===v ? (id==='hero'?'flex':'flex') : 'none';
+      if(id===v) el.style.flexDirection = id==='vision'?'row':'column';
+    });
+    apply();
+  }
+
+  function apply() {
+    const pine    = document.getElementById('c-pine').value;
+    const pineDk  = document.getElementById('c-pine-dk').value;
+    const crimson = document.getElementById('c-crimson').value;
+    const cream   = document.getElementById('c-cream').value;
+    const sand    = document.getElementById('c-sand').value;
+    const offwhite= document.getElementById('c-offwhite').value;
+    const eyebrowC= document.getElementById('c-eyebrow').value;
+    const graceC  = document.getElementById('c-grace').value;
+    const commC   = document.getElementById('c-community').value;
+    const quoteC  = document.getElementById('c-quote').value;
+    const bodyC   = document.getElementById('c-body').value;
+
+    const eyebrowS  = document.getElementById('s-eyebrow').value;
+    const graceS    = document.getElementById('s-grace').value;
+    const commS     = document.getElementById('s-community').value;
+    const graceLS   = document.getElementById('s-grace-ls').value;
+    const commLS    = document.getElementById('s-comm-ls').value;
+    const quoteS    = document.getElementById('s-quote').value;
+    const bodyS     = document.getElementById('s-body').value;
+    const cardTitleS= document.getElementById('s-card-title').value;
+    const cardTimeS = document.getElementById('s-card-time').value;
+
+    // Hero background
+    const hero = document.getElementById('pv-hero');
+    hero.style.background = `linear-gradient(to bottom, ${pineDk}cc 0%, ${pine}88 45%, ${pineDk}e0 100%)`;
+
+    // Nav
+    document.getElementById('pv-nav-link').style.color = pine;
+    document.getElementById('pv-nav-link2').style.color = pine;
+    document.getElementById('pv-nav-link3').style.color = pine;
+    document.querySelector('.prev-nav').style.background = cream + 'f5';
+    const cta = document.getElementById('pv-cta');
+    cta.style.background = crimson; cta.style.color = cream;
+
+    // Eyebrow
+    const ey = document.getElementById('pv-eyebrow');
+    ey.style.color = eyebrowC; ey.style.fontSize = eyebrowS+'px';
+
+    // GRACE
+    const gr = document.getElementById('pv-grace');
+    gr.style.color = graceC;
+    gr.style.fontSize = graceS+'px';
+    gr.style.letterSpacing = (graceLS/100)+'em';
+
+    // Community Church
+    const co = document.getElementById('pv-community');
+    co.style.color = commC;
+    co.style.fontSize = commS+'px';
+    co.style.letterSpacing = (commLS/100)+'em';
+
+    // Primary button
+    const b1 = document.getElementById('pv-btn1');
+    b1.style.background = crimson; b1.style.color = cream; b1.style.border = '2px solid '+crimson;
+
+    // Vision section
+    const vwrap = document.getElementById('pv-vwrap');
+    vwrap.style.background = cream + '14';
+    vwrap.style.borderLeftColor = crimson;
+    document.getElementById('pv-vision').style.background = cream;
+    document.getElementById('pv-vlabel').style.color = pine;
+
+    const qt = document.getElementById('pv-quote');
+    qt.style.color = quoteC; qt.style.fontSize = quoteS+'px';
+    const vb = document.getElementById('pv-vbody');
+    vb.style.color = bodyC; vb.style.fontSize = bodyS+'px';
+
+    // Services
+    const sv = document.getElementById('pv-services');
+    sv.style.background = pine;
+    document.getElementById('pv-slabel').style.color = sand;
+    document.getElementById('pv-stitle').style.color = cream;
+    ['sn1','sn2','sn3','sn4'].forEach(id => {
+      document.getElementById('pv-'+id).style.color = cream;
+      document.getElementById('pv-'+id).style.fontSize = cardTitleS+'px';
+    });
+    ['st1','st2','st3','st4'].forEach(id => {
+      document.getElementById('pv-'+id).style.color = sand;
+      document.getElementById('pv-'+id).style.fontSize = cardTimeS+'px';
+    });
+  }
+
+  function copyCSS() {
+    const vars = {
+      '--pine':       document.getElementById('c-pine').value,
+      '--pine-dk':    document.getElementById('c-pine-dk').value,
+      '--crimson':    document.getElementById('c-crimson').value,
+      '--cream':      document.getElementById('c-cream').value,
+      '--sand':       document.getElementById('c-sand').value,
+      '--off-white':  document.getElementById('c-offwhite').value,
+    };
+    const sizes = {
+      'eyebrow-size':  document.getElementById('s-eyebrow').value+'px',
+      'grace-size':    document.getElementById('s-grace').value+'px',
+      'community-size':document.getElementById('s-community').value+'px',
+      'grace-color':   document.getElementById('c-grace').value,
+      'community-color': document.getElementById('c-community').value,
+    };
+    let out = ':root {\n';
+    for(const [k,v] of Object.entries(vars)) out += `  ${k}: ${v};\n`;
+    out += '}\n\n/* Hero text */\n';
+    for(const [k,v] of Object.entries(sizes)) out += `/* ${k}: ${v} */\n`;
+
+    navigator.clipboard.writeText(out).catch(()=>{});
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!'; btn.classList.add('copied');
+    setTimeout(()=>{ btn.textContent = '📋 Copy CSS Variables'; btn.classList.remove('copied'); }, 2000);
+  }
+
+  // Init
+  apply();
+</script>
+</body>
+</html>
