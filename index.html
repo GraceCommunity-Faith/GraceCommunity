@@ -59,35 +59,39 @@
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: flex-end;
-      gap: 2rem;
       padding: 0 2rem;
       min-height: 72px;
-      background: rgba(250,245,238,0.96);
+      background: rgba(250,245,238,0.97);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(42,92,63,0.12);
       transition: box-shadow 0.3s;
     }
-    nav.scrolled { box-shadow: 0 2px 24px rgba(42,92,63,0.12); }
+    nav.scrolled { box-shadow: 0 2px 24px rgba(42,92,63,0.15); }
     .nav-links {
-      display: flex; gap: 2.2rem; list-style: none;
+      display: flex; gap: 0.4rem; list-style: none;
       margin-right: auto; margin-left: 185px;
+      align-items: center;
     }
     .nav-links a {
       font-family: 'Josefin Sans', sans-serif;
-      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--pine); text-decoration: none; transition: color 0.2s;
-      position: relative; padding-bottom: 4px;
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--pine); text-decoration: none;
+      padding: 0.48rem 1.05rem;
+      border-radius: 30px;
+      background: transparent;
+      transition: background 0.22s, color 0.22s, box-shadow 0.22s;
+      white-space: nowrap;
     }
-    .nav-links a::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
-      height: 2px; background: var(--crimson);
-      transform: scaleX(0); transform-origin: center;
-      transition: transform 0.25s ease;
+    .nav-links a:hover {
+      background: rgba(42,92,63,0.1);
+      color: var(--pine-dk);
     }
-    .nav-links a:hover { color: var(--crimson); }
-    .nav-links a:hover::after { transform: scaleX(1); }
-    .nav-links a.active { color: var(--crimson); }
-    .nav-links a.active::after { transform: scaleX(1); }
+    .nav-links a.active {
+      background: var(--pine);
+      color: var(--cream);
+      box-shadow: 0 2px 12px rgba(42,92,63,0.28);
+    }
     .nav-cta {
       font-family: 'Josefin Sans', sans-serif;
       font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
@@ -813,7 +817,9 @@
     });
   }, { threshold: 0.4 });
   sections.forEach(s => navObserver.observe(s));
-  const navObserver = new IntersectionObserver((entries) => {
+
+  // Fade-in on scroll for cards
+  const fadeObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.style.opacity = '1';
@@ -825,7 +831,7 @@
     el.style.opacity = '0';
     el.style.transform = 'translateY(20px)';
     el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
-    observer.observe(el);
+    fadeObserver.observe(el);
   });
 </script>
 </body>
