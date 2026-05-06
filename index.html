@@ -76,8 +76,18 @@
       font-family: 'Josefin Sans', sans-serif;
       font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
       color: var(--pine); text-decoration: none; transition: color 0.2s;
+      position: relative; padding-bottom: 4px;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: var(--crimson);
+      transform: scaleX(0); transform-origin: center;
+      transition: transform 0.25s ease;
     }
     .nav-links a:hover { color: var(--crimson); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links a.active { color: var(--crimson); }
+    .nav-links a.active::after { transform: scaleX(1); }
     .nav-cta {
       font-family: 'Josefin Sans', sans-serif;
       font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
@@ -367,20 +377,20 @@
       border-top: 2px solid var(--crimson);
     }
     .footer-logo img {
-      height: 60px; margin-bottom: 1.5rem;
-      filter: brightness(0) invert(1) opacity(0.85);
+      height: 80px; margin-bottom: 1.5rem;
+      filter: none;
     }
     .footer-tagline {
-      font-family: 'Crimson Pro', serif; font-style: italic;
-      color: rgba(245,234,215,0.55); margin-bottom: 1rem;
+      font-family: 'Crimson Pro', serif; font-style: italic; font-size: 1.15rem;
+      color: var(--sand); margin-bottom: 1rem;
     }
     .footer-info {
       font-family: 'Josefin Sans', sans-serif;
       font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
-      color: rgba(245,234,215,0.35); line-height: 2;
+      color: rgba(245,234,215,0.75); line-height: 2;
     }
-    .footer-info a { color: rgba(196,165,128,0.6); text-decoration: none; transition: color 0.2s; }
-    .footer-info a:hover { color: var(--sand); }
+    .footer-info a { color: var(--sand); text-decoration: none; transition: color 0.2s; }
+    .footer-info a:hover { color: #fff; }
 
     @keyframes fadeUp {
       from { opacity:0; transform: translateY(20px); }
@@ -414,7 +424,7 @@
     <li><a href="#vision">About</a></li>
     <li><a href="#ministries">Ministries</a></li>
     <li><a href="#sermons">Sermons</a></li>
-    <li><a href="https://www.facebook.com/profile.php?id=61589186043240" target="_blank" rel="noopener" style="color:#7AADDB;">Facebook</a></li>
+    <li><a href="https://www.facebook.com/profile.php?id=61589186043240" target="_blank" rel="noopener">Facebook</a></li>
     <li><a href="#prayer">Prayer</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
@@ -793,6 +803,20 @@
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 40);
   });
+
+  // Active nav highlight on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
