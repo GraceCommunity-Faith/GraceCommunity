@@ -415,11 +415,8 @@
       z-index: 201;
     }
     .nav-burger span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--pine-dk);
-      border-radius: 2px;
+      display: block; width: 24px; height: 2px;
+      background: var(--pine-dk); border-radius: 2px;
       transition: transform 0.3s, opacity 0.3s;
     }
     .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
@@ -428,26 +425,18 @@
 
     /* ─── MOBILE DRAWER ─── */
     .mobile-drawer {
-      display: none;
-      position: fixed;
-      top: 72px; left: 0; right: 0;
-      z-index: 199;
+      display: none; position: fixed;
+      top: 72px; left: 0; right: 0; z-index: 199;
       background: var(--pine-dk);
       border-bottom: 2px solid var(--crimson);
-      flex-direction: column;
-      padding: 1.25rem 2rem 1.75rem;
+      flex-direction: column; padding: 1.25rem 2rem 1.75rem;
     }
     .mobile-drawer.open { display: flex; }
     .mobile-drawer a {
-      font-family: 'Josefin Sans', sans-serif;
-      font-weight: 400;
-      font-size: 0.85rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--cream);
-      text-decoration: none;
-      padding: 0.85rem 0;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      font-family: 'Josefin Sans', sans-serif; font-weight: 400;
+      font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--cream); text-decoration: none;
+      padding: 0.85rem 0; border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .mobile-drawer a:last-child { border-bottom: none; }
     .mobile-drawer a:hover { color: var(--sand); }
@@ -456,6 +445,7 @@
     .mobile-drawer .m-contact { color: var(--crimson-lt); }
 
     @media (max-width: 768px) {
+      /* Nav */
       .nav-logo-float { left: 1rem; }
       .nav-logo-float img { width: 100px; }
       .nav-links { display: none; }
@@ -463,18 +453,13 @@
       nav { padding: 0 1rem; min-height: 64px; }
       .mobile-drawer { top: 64px; }
 
-      /* Hero text — scale down on mobile */
-      .hero-title .t-grace {
-        font-size: clamp(3rem, 18vw, 6rem);
-      }
-      .hero-title .t-community {
-        font-size: clamp(0.75rem, 4.5vw, 1.6rem);
-        letter-spacing: 0.2em;
-      }
-      /* Tagline position fix */
-      #hero > div[style*="position:absolute"] {
-        top: 140px !important;
-      }
+      /* Tagline bar */
+      .hero-tagline-bar { top: 80px; }
+      .hero-tagline-text { font-size: 0.62rem; letter-spacing: 0.08em; line-height: 1.8; }
+
+      /* Hero title */
+      .hero-title .t-grace { font-size: clamp(3rem, 18vw, 6rem); }
+      .hero-title .t-community { font-size: clamp(0.75rem, 4.5vw, 1.6rem); letter-spacing: 0.2em; }
 
       /* Vision */
       .vision-inner { grid-template-columns: 1fr; gap: 2rem; }
@@ -482,15 +467,27 @@
       .vision-label { writing-mode: horizontal-tb; transform: none; }
       .vision-divider-line { width: 60px; height: 1px; }
 
-      /* Location + Contact grids → single column */
+      /* Location */
       .location-inner { grid-template-columns: 1fr; }
-      #contact > div > div[style*="grid-template-columns:1fr 1fr"] {
-        display: block !important;
-      }
-      #contact > div > div[style*="grid-template-columns:1fr 1fr"] > div:first-child {
-        margin-bottom: 3rem;
-      }
     }
+    /* ─── HERO TAGLINE BAR ─── */
+    .hero-tagline-bar {
+      position: absolute;
+      top: 200px; left: 0; right: 0;
+      z-index: 101; text-align: center;
+      padding: 0 1rem;
+    }
+    .hero-tagline-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 900;
+      font-size: 0.90rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(245,234,215,0.92);
+      margin: 0; line-height: 1.6;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+    }
+
   </style>
   <script async src="https://tally.so/widgets/embed.js"></script>
 </head>
@@ -519,24 +516,21 @@
 
 <!-- MOBILE DRAWER -->
 <div class="mobile-drawer" id="mobile-drawer">
-  <a href="#hero"    onclick="closeDrawer()">Home</a>
-  <a href="#vision"  onclick="closeDrawer()">About</a>
-  <a href="#ministries" onclick="closeDrawer()">Ministries</a>
-  <a href="#sermons" onclick="closeDrawer()">Sermons</a>
+  <a href="#hero"        onclick="closeDrawer()">Home</a>
+  <a href="#vision"      onclick="closeDrawer()">About</a>
+  <a href="#ministries"  onclick="closeDrawer()">Ministries</a>
+  <a href="#sermons"     onclick="closeDrawer()">Sermons</a>
   <a href="https://www.facebook.com/profile.php?id=61589186043240" target="_blank" rel="noopener" class="m-fb" onclick="closeDrawer()">Facebook</a>
-  <a href="#prayer"  onclick="closeDrawer()" class="m-prayer">Prayer</a>
-  <a href="#contact" onclick="closeDrawer()" class="m-contact">Contact</a>
+  <a href="#prayer"      onclick="closeDrawer()" class="m-prayer">Prayer</a>
+  <a href="#contact"     onclick="closeDrawer()" class="m-contact">Contact</a>
 </div>
 
 <!-- HERO -->
 <section id="hero">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
-  <div style="position:absolute;top:200px;left:0;right:0;z-index:101;text-align:center;">
-    <p style="font-family:'Josefin Sans',sans-serif;font-weight:900;font-size:0.90rem;
-              letter-spacing:0.25em;text-transform:uppercase;
-              color:rgba(245,234,215,0.92);margin:0;line-height:1.4;
-              text-shadow:0 1px 6px rgba(0,0,0,0.5);">
+  <div class="hero-tagline-bar">
+    <p class="hero-tagline-text">
       Led by the Spirit &nbsp;&ndash;&nbsp; Centered on Christ &nbsp;&ndash;&nbsp; Committed to People
     </p>
   </div>
@@ -904,7 +898,6 @@
     burger.classList.toggle('open');
     drawer.classList.toggle('open');
   });
-  // Close drawer when clicking outside
   document.addEventListener('click', (e) => {
     if (!burger.contains(e.target) && !drawer.contains(e.target)) closeDrawer();
   });
