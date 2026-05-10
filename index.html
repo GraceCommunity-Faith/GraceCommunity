@@ -401,15 +401,95 @@
       to   { opacity:1; transform: translateY(0); }
     }
 
+    /* ─── HAMBURGER BUTTON ─── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 8px;
+      margin-left: auto;
+      z-index: 201;
+    }
+    .nav-burger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--pine-dk);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* ─── MOBILE DRAWER ─── */
+    .mobile-drawer {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0;
+      z-index: 199;
+      background: var(--pine-dk);
+      border-bottom: 2px solid var(--crimson);
+      flex-direction: column;
+      padding: 1.25rem 2rem 1.75rem;
+    }
+    .mobile-drawer.open { display: flex; }
+    .mobile-drawer a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 400;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .mobile-drawer a:last-child { border-bottom: none; }
+    .mobile-drawer a:hover { color: var(--sand); }
+    .mobile-drawer .m-fb { color: #7AADDB; }
+    .mobile-drawer .m-prayer { color: var(--sand); }
+    .mobile-drawer .m-contact { color: var(--crimson-lt); }
+
     @media (max-width: 768px) {
-      .nav-logo-float img { width: 110px; }
+      .nav-logo-float { left: 1rem; }
+      .nav-logo-float img { width: 100px; }
       .nav-links { display: none; }
-      nav { padding: 0 1.5rem; margin-left: 130px; }
+      .nav-burger { display: flex; }
+      nav { padding: 0 1rem; min-height: 64px; }
+      .mobile-drawer { top: 64px; }
+
+      /* Hero text — scale down on mobile */
+      .hero-title .t-grace {
+        font-size: clamp(3rem, 18vw, 6rem);
+      }
+      .hero-title .t-community {
+        font-size: clamp(0.75rem, 4.5vw, 1.6rem);
+        letter-spacing: 0.2em;
+      }
+      /* Tagline position fix */
+      #hero > div[style*="position:absolute"] {
+        top: 140px !important;
+      }
+
+      /* Vision */
       .vision-inner { grid-template-columns: 1fr; gap: 2rem; }
       .vision-deco { flex-direction: row; }
       .vision-label { writing-mode: horizontal-tb; transform: none; }
       .vision-divider-line { width: 60px; height: 1px; }
+
+      /* Location + Contact grids → single column */
       .location-inner { grid-template-columns: 1fr; }
+      #contact > div > div[style*="grid-template-columns:1fr 1fr"] {
+        display: block !important;
+      }
+      #contact > div > div[style*="grid-template-columns:1fr 1fr"] > div:first-child {
+        margin-bottom: 3rem;
+      }
     }
   </style>
   <script async src="https://tally.so/widgets/embed.js"></script>
@@ -432,7 +512,21 @@
     <li><a href="#prayer">Prayer</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="nav-burger" id="nav-burger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <a href="#hero"    onclick="closeDrawer()">Home</a>
+  <a href="#vision"  onclick="closeDrawer()">About</a>
+  <a href="#ministries" onclick="closeDrawer()">Ministries</a>
+  <a href="#sermons" onclick="closeDrawer()">Sermons</a>
+  <a href="https://www.facebook.com/profile.php?id=61589186043240" target="_blank" rel="noopener" class="m-fb" onclick="closeDrawer()">Facebook</a>
+  <a href="#prayer"  onclick="closeDrawer()" class="m-prayer">Prayer</a>
+  <a href="#contact" onclick="closeDrawer()" class="m-contact">Contact</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -799,6 +893,22 @@
 </footer>
 
 <script>
+  // Hamburger menu
+  const burger = document.getElementById('nav-burger');
+  const drawer = document.getElementById('mobile-drawer');
+  function closeDrawer() {
+    burger.classList.remove('open');
+    drawer.classList.remove('open');
+  }
+  burger.addEventListener('click', () => {
+    burger.classList.toggle('open');
+    drawer.classList.toggle('open');
+  });
+  // Close drawer when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!burger.contains(e.target) && !drawer.contains(e.target)) closeDrawer();
+  });
+
   const nav = document.getElementById('main-nav');
   window.addEventListener('scroll', () => {
     nav.classList.toggle('scrolled', window.scrollY > 40);
