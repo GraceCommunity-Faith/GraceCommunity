@@ -488,6 +488,103 @@
       text-shadow: 0 1px 6px rgba(0,0,0,0.5);
     }
 
+    /* ─── ANNOUNCEMENTS BUTTON ─── */
+    .nav-announce-btn {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      background: var(--sand); color: var(--pine-dk);
+      border: none; padding: 0.52rem 1.1rem;
+      border-radius: 30px; cursor: pointer;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap; font-weight: 600;
+      margin-left: 0.5rem;
+    }
+    .nav-announce-btn:hover { background: var(--sand-lt); transform: scale(1.03); }
+    .ann-badge {
+      background: var(--crimson); color: #fff;
+      font-size: 0.62rem; font-weight: 700;
+      border-radius: 50%; width: 18px; height: 18px;
+      display: flex; align-items: center; justify-content: center;
+      line-height: 1;
+    }
+
+    /* ─── ANNOUNCEMENTS MODAL ─── */
+    .ann-overlay {
+      display: none; position: fixed; inset: 0; z-index: 500;
+      background: rgba(28,61,42,0.55); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    .ann-overlay.open { display: flex; }
+    .ann-modal {
+      background: var(--off-white); border-radius: 12px;
+      width: 100%; max-width: 680px; max-height: 85vh; overflow-y: auto;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+      animation: annSlideUp 0.3s ease both;
+    }
+    @keyframes annSlideUp {
+      from { opacity:0; transform: translateY(24px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .ann-modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 1.6rem 1rem;
+      border-bottom: 1px solid rgba(42,92,63,0.12);
+    }
+    .ann-modal-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 600; color: var(--pine-dk);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .ann-close-btn {
+      background: none; border: none; cursor: pointer;
+      color: var(--pine); font-size: 1.5rem; line-height: 1;
+      padding: 0.25rem 0.5rem; border-radius: 4px; transition: background 0.2s;
+    }
+    .ann-close-btn:hover { background: rgba(42,92,63,0.1); }
+    .ann-modal-body { padding: 1.4rem 1.6rem; }
+    .ann-empty { text-align: center; padding: 2rem 1rem; color: var(--text); opacity: 0.7; }
+    .ann-empty p { font-size: 1rem; margin-bottom: 0.75rem; }
+    .ann-empty a { color: var(--crimson); font-weight: 600; text-decoration: underline; }
+    .ann-cards { display: flex; flex-direction: column; gap: 1.4rem; }
+    .ann-card {
+      background: #fff; border: 1px solid rgba(42,92,63,0.12);
+      border-radius: 10px; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .ann-card-images { display: flex; gap: 4px; max-height: 180px; overflow: hidden; }
+    .ann-card-images img { flex: 1; object-fit: cover; width: 0; display: block; }
+    .ann-card-body { padding: 1.1rem 1.2rem; }
+    .ann-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 700; color: var(--pine-dk); margin-bottom: 0.3rem;
+    }
+    .ann-card-meta {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--sand); margin-bottom: 0.65rem;
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+    }
+    .ann-card-desc { font-size: 1rem; line-height: 1.55; color: var(--text); margin-bottom: 1rem; }
+    .ann-card-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; }
+    .ann-btn-signup {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+      background: var(--crimson); color: #fff; border: none;
+      padding: 0.55rem 1.3rem; border-radius: 2px; cursor: pointer;
+      text-decoration: none; transition: opacity 0.2s; display: inline-block;
+    }
+    .ann-btn-signup:hover { opacity: 0.85; }
+    .ann-btn-info {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--pine); border: 1.5px solid var(--pine);
+      background: none; padding: 0.5rem 1.1rem; border-radius: 2px;
+      text-decoration: none; transition: background 0.2s, color 0.2s; display: inline-block;
+    }
+    .ann-btn-info:hover { background: var(--pine); color: var(--cream); }
+    .ann-loading { text-align: center; padding: 2rem; color: var(--pine); opacity: 0.6; font-style: italic; }
+
   </style>
   <script async src="https://tally.so/widgets/embed.js"></script>
 </head>
@@ -510,6 +607,10 @@
     <li><a href="#prayer">Prayer</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="nav-announce-btn" id="ann-open-btn" onclick="openAnnouncements()">
+    📣 Announcements
+    <span class="ann-badge" id="ann-badge" style="display:none;">0</span>
+  </button>
   <button class="nav-burger" id="nav-burger" aria-label="Open menu">
     <span></span><span></span><span></span>
   </button>
@@ -909,6 +1010,131 @@
     <p style="margin-top:1rem; opacity:0.4;">© 2025 Grace Community Church. All rights reserved.</p>
   </div>
 </footer>
+
+<!-- ANNOUNCEMENTS MODAL -->
+<div class="ann-overlay" id="ann-overlay" onclick="closeAnnouncementsOutside(event)">
+  <div class="ann-modal" id="ann-modal">
+    <div class="ann-modal-header">
+      <h2>📣 Announcements</h2>
+      <button class="ann-close-btn" onclick="closeAnnouncements()" aria-label="Close">&#x2715;</button>
+    </div>
+    <div class="ann-modal-body" id="ann-modal-body">
+      <div class="ann-loading">Loading announcements&hellip;</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── ANNOUNCEMENTS ──────────────────────────────────────────────
+  const ANN_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vST3F1u2Li9nDBbIGsYoYMa-Qt6Z-fDg8kx0NOL78XswSRAf0_VRl0x5PgMK3thpegSgrakq5GxQs4N/pub?gid=426647223&single=true&output=csv';
+
+  function openAnnouncements() {
+    document.getElementById('ann-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    loadAnnouncements();
+  }
+  function closeAnnouncements() {
+    document.getElementById('ann-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function closeAnnouncementsOutside(e) {
+    if (e.target === document.getElementById('ann-overlay')) closeAnnouncements();
+  }
+
+  function driveDirectUrl(url) {
+    if (!url) return '';
+    var match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) return 'https://drive.google.com/uc?export=view&id=' + match[1];
+    return url;
+  }
+
+  function parseCSV(text) {
+    var rows = []; var inQuote = false;
+    var row = []; var cell = '';
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (c === '"') { inQuote = !inQuote; }
+      else if (c === ',' && !inQuote) { row.push(cell.trim()); cell = ''; }
+      else if ((c === '\n' || c === '\r') && !inQuote) {
+        if (cell || row.length) { row.push(cell.trim()); rows.push(row); }
+        row = []; cell = '';
+        if (c === '\r' && text[i+1] === '\n') i++;
+      } else { cell += c; }
+    }
+    if (cell || row.length) { row.push(cell.trim()); rows.push(row); }
+    return rows;
+  }
+
+  var annLoaded = false;
+  function loadAnnouncements() {
+    if (annLoaded) return;
+    annLoaded = true;
+    var body = document.getElementById('ann-modal-body');
+    fetch(ANN_CSV_URL)
+      .then(function(r) { return r.text(); })
+      .then(function(csv) {
+        var rows = parseCSV(csv);
+        if (rows.length < 2) { renderAnnEmpty(body); return; }
+        // Col order: 0=Timestamp,1=Title,2=Description,3=Date,4=Time,
+        // 5=Location,6=Img1,7=Img2,8=Img3,9=SignUp,10=TallyURL,11=Contact,12=Active
+        var active = rows.slice(1).filter(function(r) {
+          return r[12] && r[12].toLowerCase() === 'yes';
+        });
+        if (!active.length) { renderAnnEmpty(body); return; }
+        var badge = document.getElementById('ann-badge');
+        badge.textContent = active.length;
+        badge.style.display = 'flex';
+        var html = '<div class="ann-cards">';
+        active.forEach(function(r) {
+          var title    = r[1]  || '';
+          var desc     = r[2]  || '';
+          var date     = r[3]  || '';
+          var time     = r[4]  || '';
+          var loc      = r[5]  || '';
+          var img1     = driveDirectUrl(r[6] || '');
+          var img2     = driveDirectUrl(r[7] || '');
+          var img3     = driveDirectUrl(r[8] || '');
+          var signup   = r[9]  || 'No';
+          var tallyUrl = r[10] || '';
+          var contact  = r[11] || '';
+          var imgs = [img1,img2,img3].filter(Boolean);
+          var imgHtml = '';
+          if (imgs.length) {
+            imgHtml = '<div class="ann-card-images">';
+            imgs.forEach(function(u) { imgHtml += '<img src="'+u+'" alt="" loading="lazy" onerror="this.style.display=\'none\'"/>'; });
+            imgHtml += '</div>';
+          }
+          var metaHtml = '<div class="ann-card-meta">';
+          if (date) metaHtml += '<span>&#128197; '+date+'</span>';
+          if (time) metaHtml += '<span>&#128336; '+time+'</span>';
+          if (loc)  metaHtml += '<span>&#128205; '+loc+'</span>';
+          metaHtml += '</div>';
+          var actHtml = '<div class="ann-card-actions">';
+          if (signup !== 'No' && tallyUrl) {
+            var btnLabel = signup.indexOf('RSVP') > -1 ? 'RSVP' : 'Register Now';
+            actHtml += '<a href="'+tallyUrl+'" target="_blank" class="ann-btn-signup">'+btnLabel+'</a>';
+          }
+          if (contact) {
+            var href = contact.indexOf('@') > -1 ? 'mailto:'+contact : contact.indexOf('http') > -1 ? contact : 'tel:'+contact;
+            actHtml += '<a href="'+href+'" class="ann-btn-info">Contact / More Info</a>';
+          }
+          actHtml += '</div>';
+          html += '<div class="ann-card">'+imgHtml+'<div class="ann-card-body"><div class="ann-card-title">'+title+'</div>'+metaHtml+'<p class="ann-card-desc">'+desc+'</p>'+actHtml+'</div></div>';
+        });
+        html += '</div>';
+        body.innerHTML = html;
+      })
+      .catch(function() {
+        renderAnnEmpty(body);
+      });
+  }
+
+  function renderAnnEmpty(body) {
+    body.innerHTML = '<div class="ann-empty"><p style="font-size:2rem;">&#128591;</p><p>No special events at this time.</p><p>Please visit our <a href="#events" onclick="closeAnnouncements()">Church Calendar</a> to view our regularly scheduled services.</p></div>';
+  }
+  // ── END ANNOUNCEMENTS ──────────────────────────────────────────
+
+</script>
 
 <script>
   // Hamburger menu
