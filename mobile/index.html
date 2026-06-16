@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <title>Grace Community Church</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Georgia', serif;
+      background: #f5f0e8;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 38vh;
+      min-height: 200px;
+      overflow: hidden;
+    }
+    .hero img.church-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+    }
+    .hero-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60%;
+      background: linear-gradient(to bottom, transparent, rgba(245,240,232,0.95));
+    }
+
+    /* ── LOGO SECTION ── */
+    .identity {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px 10px;
+      margin-top: -30px;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+    .identity img.logo {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      background: #f5f0e8;
+      border-radius: 50%;
+      padding: 6px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+    }
+    .identity h1 {
+      font-family: 'Georgia', serif;
+      font-size: 2rem;
+      letter-spacing: 0.15em;
+      color: #1a3a1a;
+      margin-top: 8px;
+      font-weight: 700;
+    }
+    .identity h2 {
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      color: #5a6b40;
+      font-weight: 400;
+      margin-top: 2px;
+    }
+    .tagline {
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: #6b6b5a;
+      text-transform: uppercase;
+      margin-top: 8px;
+      line-height: 1.7;
+      text-align: center;
+    }
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: #8a9a6a;
+      margin: 10px auto 0;
+    }
+
+    /* ── BUTTON GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 14px 14px 0;
+      flex: 1;
+    }
+    .btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      padding: 18px 8px 14px;
+      text-decoration: none;
+      color: white;
+      gap: 8px;
+      min-height: 100px;
+      transition: opacity 0.15s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { opacity: 0.82; transform: scale(0.97); }
+
+    .btn-sermons  { background: #7a1a1a; }
+    .btn-prayer   { background: #2e5a2e; }
+    .btn-events   { background: #8a7a2a; }
+    .btn-giving   { background: #3a6a3a; }
+    .btn-facebook { background: #1a2e5a; }
+    .btn-contact  { background: #6a5a3a; }
+
+    .btn-icon {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-icon svg { width: 34px; height: 34px; fill: white; }
+
+    .btn-label {
+      font-family: 'Arial', sans-serif;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .btn-sub {
+      font-size: 0.62rem;
+      opacity: 0.88;
+      text-align: center;
+      letter-spacing: 0.03em;
+      margin-top: -4px;
+    }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #1a3a1a;
+      padding: 12px 20px;
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
+      margin-top: 14px;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: white;
+      text-decoration: none;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nav-item.active { opacity: 1; }
+    .nav-item svg { width: 24px; height: 24px; fill: white; }
+    .nav-dots { display: flex; gap: 4px; }
+    .nav-dots span {
+      width: 5px; height: 5px;
+      background: white;
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+    .nav-dots span:first-child { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO PHOTO -->
+  <div class="hero">
+    <img class="church-photo" src="images/background.jpg" alt="Grace Community Church"/>
+    <div class="hero-overlay"></div>
+  </div>
+
+  <!-- IDENTITY -->
+  <div class="identity">
+    <img class="logo" src="images/logo.png" alt="Grace Community Church Logo"/>
+    <h1>GRACE</h1>
+    <h2>COMMUNITY CHURCH</h2>
+    <p class="tagline">
+      Led by the Spirit<br/>
+      Centered on Christ<br/>
+      Committed to People
+    </p>
+    <div class="divider"></div>
+  </div>
+
+  <!-- BUTTON GRID -->
+  <div class="grid">
+
+    <a href="https://www.youtube.com/@gracecommunity" class="btn btn-sermons">
+      <div class="btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.6 5 12 5 12 5s-4.6 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.3.9C6.8 19 12 19 12 19s4.6 0 7-.2c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9l5.5 2.8-5.5 2.7z"/></svg>
+      </div>
+      <span class="btn-label">Sermons</span>
+      <span class="btn-sub">Watch on YouTube</span>
+    </a>
+
+    <a href="../prayer.html" class="btn btn-prayer">
+      <div class="btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C9.2 2 7 4.2 7 7c0 1.8.9 3.3 2.3 4.3L8 22h8l-1.3-10.7C16.1 10.3 17 8.8 17 7c0-2.8-2.2-5-5-5zm0 2c1.7 0 3 1.3 3 3s-1.3 3-3 3-3-1.3-3-3 1.3-3 3-3z"/></svg>
+      </div>
+      <span class="btn-label">Prayer</span>
+      <span class="btn-sub">Request Prayer</span>
+    </a>
+
+    <a href="../calendar.html" class="btn btn-events">
+      <div class="btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+      </div>
+      <span class="btn-label">Events</span>
+      <span class="btn-sub">See Upcoming</span>
+    </a>
+
+    <a href="../give.html" class="btn btn-giving">
+      <div class="btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 21.7C5.8 16.8 2 13.4 2 9.5 2 6.4 4.4 4 7.5 4c1.8 0 3.6.9 4.5 2.3C13 4.9 14.7 4 16.5 4 19.6 4 22 6.4 22 9.5c0 3.9-3.8 7.3-10 12.2z"/></svg>
+      </div>
+      <span class="btn-label">Giving</span>
+      <span class="btn-sub">Give Online</span>
+    </a>
+
+    <a href="https://www.facebook.com/GraceCommunityChurch" class="btn btn-facebook">
+      <div class="btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      </div>
+      <span class="btn-label">Facebook</span>
+      <span class="btn-sub">Connect with Us</span>
+    </a>
+
+    <a href="../contact.html" class="btn btn-contact">
+      <div class="btn-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/></svg>
+      </div>
+      <span class="btn-label">Contact</span>
+      <span class="btn-sub">Info &amp; Map</span>
+    </a>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item active">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Home
+    </a>
+    <div class="nav-item">
+      <div class="nav-dots">
+        <span></span><span></span><span></span>
+      </div>
+      More
+    </div>
+  </nav>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "appId": "faith.gracecommunity.app",
+  "appName": "Grace Community Church",
+  "webDir": "docs",
+  "server": {
+    "url": "https://gracecommunity.faith/mobile",
+    "cleartext": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "launchAutoHide": true,
+      "backgroundColor": "#1a3a2a",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    }
+  }
+}
