@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <title>Grace Community Church</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      background: #F5EAD7;
+      overflow: hidden;
+    }
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+      background: #F5EAD7;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      flex: 0 0 40%;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .hero img.church-photo {
+      width: 100%;
+      height: 115%;
+      object-fit: cover;
+      object-position: center 15%;
+      display: block;
+    }
+
+    /* Concave scoop — cream shape cuts into bottom of hero */
+    .hero-scoop {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 90px;
+      overflow: hidden;
+    }
+    .hero-scoop svg {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Logo circle overlapping hero */
+    .logo-wrap {
+      position: absolute;
+      bottom: -62px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      width: 128px;
+      height: 128px;
+      border-radius: 50%;
+      background: #F5EAD7;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.22), 0 2px 8px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 7px;
+    }
+    .logo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
+    }
+
+    /* ── IDENTITY ── */
+    .identity {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 70px 16px 4px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+    .church-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: #1C3D2A;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    .church-sub {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.66rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      color: #3A7A56;
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+    .tagline {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.54rem;
+      letter-spacing: 0.1em;
+      color: #6b5a3a;
+      line-height: 2;
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+    .rule {
+      width: 50px;
+      height: 1px;
+      background: #8a9a6a;
+      margin: 7px auto 0;
+    }
+
+    /* ── GRID ── */
+    .grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 8px 12px 6px;
+      min-height: 0;
+    }
+    .btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      text-decoration: none;
+      color: white;
+      gap: 5px;
+      transition: opacity 0.15s, transform 0.12s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { opacity: 0.8; transform: scale(0.96); }
+    .btn svg { width: 30px; height: 30px; fill: white; }
+    .btn-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .btn-sub {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.54rem;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      opacity: 0.9;
+      margin-top: -3px;
+    }
+
+    .c-red    { background: #7a1a1a; }
+    .c-green  { background: #2e5a2e; }
+    .c-gold   { background: #7a6a1a; }
+    .c-green2 { background: #3a6a3a; }
+    .c-navy   { background: #1a2e5a; }
+    .c-brown  { background: #6a5a3a; }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #1C3D2A;
+      padding: 16px 20px;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: white;
+      text-decoration: none;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .nav-item svg { width: 26px; height: 26px; fill: white; }
+    .dots { display: flex; gap: 5px; margin-bottom: 2px; }
+    .dots span {
+      width: 5px; height: 5px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 50%;
+    }
+    .dots span:first-child { background: white; }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HERO with concave scoop -->
+  <div class="hero">
+    <img class="church-photo" src="images/background.jpg" alt="Grace Community Church"/>
+
+    <!-- Deep concave scoop -->
+    <div class="hero-scoop">
+      <svg viewBox="0 0 375 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,90 L0,45 Q187.5,0 375,45 L375,90 Z" fill="#F5EAD7"/>
+      </svg>
+    </div>
+
+    <!-- Large logo overlapping -->
+    <div class="logo-wrap">
+      <img src="images/logo.png" alt="Grace Community Church Logo"/>
+    </div>
+  </div>
+
+  <!-- IDENTITY -->
+  <div class="identity">
+    <div class="church-name">GRACE</div>
+    <div class="church-sub">Community Church</div>
+    <div class="tagline">
+      Led by the Spirit · Centered on Christ · Committed to People
+    </div>
+    <div class="rule"></div>
+  </div>
+
+  <!-- GRID -->
+  <div class="grid">
+
+    <a href="sermons.html" class="btn c-red">
+      <svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.6 5 12 5 12 5s-4.6 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.3.9C6.8 19 12 19 12 19s4.6 0 7-.2c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9l5.5 2.8-5.5 2.7z"/></svg>
+      <span class="btn-label">Sermons</span>
+      <span class="btn-sub">Watch on YouTube</span>
+    </a>
+
+    <a href="prayer.html" class="btn c-green">
+      <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+      <span class="btn-label">Prayer</span>
+      <span class="btn-sub">Request Prayer</span>
+    </a>
+
+    <a href="events.html" class="btn c-gold">
+      <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+      <span class="btn-label">Events</span>
+      <span class="btn-sub">See Upcoming</span>
+    </a>
+
+    <a href="give.html" class="btn c-green2">
+      <svg viewBox="0 0 24 24"><path d="M12 21.7C5.8 16.8 2 13.4 2 9.5 2 6.4 4.4 4 7.5 4c1.8 0 3.6.9 4.5 2.3C13 4.9 14.7 4 16.5 4 19.6 4 22 6.4 22 9.5c0 3.9-3.8 7.3-10 12.2z"/></svg>
+      <span class="btn-label">Giving</span>
+      <span class="btn-sub">Give Online</span>
+    </a>
+
+    <a href="https://www.facebook.com/profile.php?id=61589186043240" class="btn c-navy">
+      <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+      <span class="btn-label">Facebook</span>
+      <span class="btn-sub">Connect with Us</span>
+    </a>
+
+    <a href="contact.html" class="btn c-brown">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/></svg>
+      <span class="btn-label">Contact</span>
+      <span class="btn-sub">Info &amp; Map</span>
+    </a>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <a href="index.html" class="nav-item">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Home
+    </a>
+    <a href="more.html" class="nav-item">
+      <div class="dots"><span></span><span></span><span></span></div>
+      More
+    </a>
+  </nav>
+
+</div>
+</body>
+</html>
