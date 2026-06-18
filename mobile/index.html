@@ -318,6 +318,116 @@
     }
     .verse-share-btn:active { opacity: 0.8; }
 
+    /* ── DAILY CHALLENGE PANEL ── */
+    #panel-challenge .challenge-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 16px 24px;
+      gap: 12px;
+      overflow-y: auto;
+    }
+    .challenge-date {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem; color: #6b5a3a;
+      text-align: center; letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .challenge-meta {
+      display: flex; justify-content: space-between;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem; font-weight: 600;
+      color: #3a2a5a;
+    }
+    .challenge-dots { display: flex; justify-content: center; gap: 8px; margin: 4px 0; }
+    .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #cbb98a; background: #F5EAD7; display: inline-block; }
+    .dot.dot-active { background: #3a2a5a; border-color: #3a2a5a; }
+    .dot.dot-correct { background: #2e5a2e; border-color: #2e5a2e; }
+    .dot.dot-wrong { background: #7a1a1a; border-color: #7a1a1a; }
+    .challenge-card {
+      background: white;
+      border: 2px solid #3a2a5a;
+      border-radius: 14px;
+      padding: 20px 16px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .challenge-question {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.05rem; font-weight: 600;
+      color: #1C3D2A; text-align: center; line-height: 1.4;
+    }
+    .challenge-choices { display: flex; flex-direction: column; gap: 10px; }
+    .choice-btn {
+      background: white; border: 2px solid #3a2a5a;
+      border-radius: 10px; padding: 12px 14px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      color: #3a2a5a; text-align: left; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .choice-btn:active { background: #3a2a5a; color: white; }
+    .choice-btn.correct { background: #e3f3e3; border-color: #2e5a2e; color: #2e5a2e; }
+    .choice-btn.incorrect { background: #f9e3e3; border-color: #7a1a1a; color: #7a1a1a; }
+    .choice-btn.disabled { cursor: default; opacity: 0.95; }
+    .challenge-feedback {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      text-align: center; padding: 8px; border-radius: 8px;
+    }
+    .challenge-feedback.good { color: #2e5a2e; }
+    .challenge-feedback.bad { color: #7a1a1a; }
+    .challenge-reference {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem; color: #6b5a3a;
+      text-align: center; font-style: italic;
+      cursor: pointer; padding: 4px;
+    }
+    .challenge-next-btn {
+      background: #3a2a5a; color: white;
+      border: none; border-radius: 10px;
+      padding: 14px; font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .challenge-next-btn:active { opacity: 0.85; }
+    .challenge-complete {
+      background: white; border: 2px solid #3a2a5a;
+      border-radius: 14px; padding: 30px 20px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      text-align: center;
+    }
+    .complete-icon { font-size: 2.6rem; }
+    .complete-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.1rem; font-weight: 600;
+      color: #3a2a5a; letter-spacing: 0.05em;
+    }
+    .complete-score, .complete-streak {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.95rem; color: #1C3D2A; font-weight: 600;
+    }
+    .complete-note {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem; color: #8a9a6a; font-style: italic;
+      margin-top: 4px;
+    }
+    .challenge-share-btn {
+      margin-top: 10px;
+      background: #1C3D2A; color: white;
+      border: none; border-radius: 10px;
+      padding: 14px 26px; font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .challenge-promo {
+      text-align: center; padding: 12px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem; color: #3a2a5a;
+      text-decoration: underline; cursor: pointer;
+    }
+
     /* ── CONTACT PANEL ── */
     #panel-contact .contact-body {
       flex: 1; overflow-y: auto;
@@ -539,6 +649,14 @@
           </span>
           <svg class="more-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
         </button>
+        <button class="more-row" style="background:#3a2a5a;" onclick="openChallenge()">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+          <span class="more-row-text">
+            <span class="more-row-label">Daily Bible Challenge</span>
+            <span class="more-row-sub">Test Your Knowledge</span>
+          </span>
+          <svg class="more-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
         <button class="more-row" style="background:#6a5a3a;" onclick="showPanel('contact')">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/></svg>
           <span class="more-row-text">
@@ -575,6 +693,20 @@
           <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91s-1.31-2.92-2.92-2.92z"/></svg>
           Share This Verse
         </button>
+      </div>
+    </div>
+
+    <!-- DAILY CHALLENGE -->
+    <div class="panel" id="panel-challenge">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('more')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          More
+        </button>
+        <div class="panel-title">Daily Challenge</div>
+      </div>
+      <div class="challenge-body" id="challenge-body">
+        <div class="challenge-date">Loading&hellip;</div>
       </div>
     </div>
 
@@ -700,6 +832,199 @@
       title: 'Daily Bible Verse — Grace Community Church',
       text: `"${verseText}" — ${verseRef}`,
       dialogTitle: 'Share This Verse'
+    };
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share) {
+      try { await window.Capacitor.Plugins.Share.share(shareData); } catch (e) {}
+    } else if (navigator.share) {
+      try { await navigator.share(shareData); } catch (e) {}
+    } else {
+      alert(shareData.text);
+    }
+  }
+
+  // ── DAILY CHALLENGE ──
+  const DAILY_COUNT = 5;
+  let challengePool = null;
+  let todayQuestions = null;
+  let currentIndex = 0;
+  let challengeScore = 0;
+  let answeredLog = [];
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function getDateKey(offsetDays) {
+    const d = new Date();
+    if (offsetDays) d.setDate(d.getDate() + offsetDays);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  function formatDateLong() {
+    return new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  function seededRandom(seed) {
+    let t = seed;
+    return function () {
+      t |= 0; t = (t + 0x6D2B79F5) | 0;
+      let r = Math.imul(t ^ (t >>> 15), 1 | t);
+      r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+      return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function pickTodayQuestions(pool, n) {
+    const now = new Date();
+    const seed = now.getFullYear() * 1000 + getDayOfYear();
+    const rand = seededRandom(seed);
+    const used = new Set();
+    const picks = [];
+    while (picks.length < n) {
+      const i = Math.floor(rand() * pool.length);
+      if (!used.has(i)) { used.add(i); picks.push(pool[i]); }
+    }
+    return picks;
+  }
+
+  async function loadChallengePool() {
+    if (challengePool) return challengePool;
+    const res = await fetch('challenge-questions.json');
+    challengePool = await res.json();
+    return challengePool;
+  }
+
+  async function openChallenge() {
+    showPanel('challenge');
+    const todayKey = getDateKey(0);
+    const completedDate = localStorage.getItem('gc_challenge_date');
+    if (completedDate === todayKey) {
+      const score = parseInt(localStorage.getItem('gc_challenge_score') || '0', 10);
+      const streak = parseInt(localStorage.getItem('gc_challenge_streak') || '0', 10);
+      renderChallengeCompletion(score, streak, true);
+      return;
+    }
+    try {
+      const pool = await loadChallengePool();
+      todayQuestions = pickTodayQuestions(pool, DAILY_COUNT);
+      currentIndex = 0;
+      challengeScore = 0;
+      answeredLog = [];
+      renderChallengeQuestion();
+    } catch (e) {
+      document.getElementById('challenge-body').innerHTML = '<div class="challenge-date">Unable to load today\'s challenge. Please try again.</div>';
+    }
+  }
+
+  function renderChallengeDots(currentCorrectOverride) {
+    return todayQuestions.map((_, i) => {
+      if (i < currentIndex) return answeredLog[i] ? 'dot-correct' : 'dot-wrong';
+      if (i === currentIndex && currentCorrectOverride !== undefined) return currentCorrectOverride ? 'dot-correct' : 'dot-wrong';
+      if (i === currentIndex) return 'dot-active';
+      return '';
+    });
+  }
+
+  function renderChallengeQuestion() {
+    const q = todayQuestions[currentIndex];
+    const dots = renderChallengeDots();
+    document.getElementById('challenge-body').innerHTML = `
+      <div class="challenge-date">${formatDateLong()}</div>
+      <div class="challenge-meta"><span>Question ${currentIndex + 1} of ${todayQuestions.length}</span><span>Score: ${challengeScore}</span></div>
+      <div class="challenge-dots">${dots.map(c => `<span class="dot ${c}"></span>`).join('')}</div>
+      <div class="challenge-card">
+        <div class="challenge-question">${escapeHtml(q.question)}</div>
+        <div class="challenge-choices">
+          ${q.choices.map((c, i) => `<button class="choice-btn" onclick="selectChallengeChoice(${i})">${String.fromCharCode(65 + i)}) ${escapeHtml(c)}</button>`).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function selectChallengeChoice(i) {
+    const q = todayQuestions[currentIndex];
+    const correct = i === q.answer;
+    answeredLog[currentIndex] = correct;
+    if (correct) challengeScore++;
+    const dots = renderChallengeDots(correct);
+    document.getElementById('challenge-body').innerHTML = `
+      <div class="challenge-date">${formatDateLong()}</div>
+      <div class="challenge-meta"><span>Question ${currentIndex + 1} of ${todayQuestions.length}</span><span>Score: ${challengeScore}</span></div>
+      <div class="challenge-dots">${dots.map(c => `<span class="dot ${c}"></span>`).join('')}</div>
+      <div class="challenge-card">
+        <div class="challenge-question">${escapeHtml(q.question)}</div>
+        <div class="challenge-choices">
+          ${q.choices.map((c, idx) => {
+            let cls = 'choice-btn disabled';
+            if (idx === q.answer) cls += ' correct';
+            else if (idx === i) cls += ' incorrect';
+            return `<button class="${cls}" disabled>${String.fromCharCode(65 + idx)}) ${escapeHtml(c)}</button>`;
+          }).join('')}
+        </div>
+        <div class="challenge-feedback ${correct ? 'good' : 'bad'}">${correct ? '✅ Correct!' : '❌ Correct answer: ' + escapeHtml(q.choices[q.answer])}</div>
+        <div class="challenge-reference" id="challenge-verse-toggle" data-ref="${escapeHtml(q.reference)}" data-verse="${escapeHtml(q.verseText)}" data-revealed="0" onclick="toggleChallengeVerse()">📖 ${escapeHtml(q.reference)} — tap to see verse</div>
+        <button class="challenge-next-btn" onclick="nextChallengeQuestion()">${currentIndex + 1 < todayQuestions.length ? 'Next Question' : 'See Results'}</button>
+      </div>
+    `;
+  }
+
+  function toggleChallengeVerse() {
+    const el = document.getElementById('challenge-verse-toggle');
+    if (!el) return;
+    if (el.dataset.revealed === '1') {
+      el.textContent = '📖 ' + el.dataset.ref + ' — tap to see verse';
+      el.dataset.revealed = '0';
+    } else {
+      el.textContent = '"' + el.dataset.verse + '" — ' + el.dataset.ref;
+      el.dataset.revealed = '1';
+    }
+  }
+
+  function nextChallengeQuestion() {
+    currentIndex++;
+    if (currentIndex >= todayQuestions.length) {
+      finishChallenge();
+    } else {
+      renderChallengeQuestion();
+    }
+  }
+
+  function finishChallenge() {
+    const todayKey = getDateKey(0);
+    const yesterdayKey = getDateKey(-1);
+    const lastDate = localStorage.getItem('gc_challenge_date');
+    let streak = parseInt(localStorage.getItem('gc_challenge_streak') || '0', 10);
+    if (lastDate === yesterdayKey) {
+      streak = streak + 1;
+    } else if (lastDate !== todayKey) {
+      streak = 1;
+    }
+    localStorage.setItem('gc_challenge_date', todayKey);
+    localStorage.setItem('gc_challenge_score', String(challengeScore));
+    localStorage.setItem('gc_challenge_streak', String(streak));
+    renderChallengeCompletion(challengeScore, streak, false);
+  }
+
+  function renderChallengeCompletion(score, streak, alreadyDone) {
+    document.getElementById('challenge-body').innerHTML = `
+      <div class="challenge-date">${formatDateLong()}</div>
+      <div class="challenge-complete">
+        <div class="complete-icon">🏆</div>
+        <div class="complete-title">${alreadyDone ? "Today's Challenge Complete" : 'Daily Complete!'}</div>
+        <div class="complete-score">Score: ${score} / ${DAILY_COUNT}</div>
+        <div class="complete-streak">🔥 Daily Streak: ${streak}</div>
+        <div class="complete-note">Come back tomorrow for 5 new questions</div>
+        <button class="challenge-share-btn" onclick="shareChallenge(${score}, ${streak})">Share My Results</button>
+      </div>
+      <div class="challenge-promo" onclick="window.open('https://practicalfaith.net/quiz_links.html','_blank')">🎯 For more Bible Quiz fun, check out our Quiz Apps →</div>
+    `;
+  }
+
+  async function shareChallenge(score, streak) {
+    const shareData = {
+      title: 'Grace Community Church Bible Challenge',
+      text: `I scored ${score}/${DAILY_COUNT} on today's Bible Challenge at Grace Community Church! 🔥 Streak: ${streak} day${streak === 1 ? '' : 's'}`,
+      dialogTitle: 'Share My Results'
     };
     if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share) {
       try { await window.Capacitor.Plugins.Share.share(shareData); } catch (e) {}
