@@ -274,6 +274,50 @@
       font-style: italic;
     }
 
+    /* ── DAILY VERSE PANEL ── */
+    #panel-verse .verse-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 28px;
+      gap: 14px;
+      text-align: center;
+      overflow-y: auto;
+    }
+    .verse-quote {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 3rem;
+      color: #7a6a1a;
+      line-height: 0.4;
+    }
+    .verse-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.05rem; font-weight: 300;
+      color: #1C3D2A; line-height: 1.6;
+      font-style: italic;
+    }
+    .verse-reference {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.15em; color: #7a6a1a;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .verse-share-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: #1C3D2A; color: white;
+      border: none; border-radius: 10px;
+      padding: 14px 26px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; margin-top: 8px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .verse-share-btn:active { opacity: 0.8; }
+
     /* ── CONTACT PANEL ── */
     #panel-contact .contact-body {
       flex: 1; overflow-y: auto;
@@ -487,6 +531,14 @@
         <div class="panel-title">More</div>
       </div>
       <div class="more-list">
+        <button class="more-row" style="background:#7a6a1a;" onclick="showDailyVerse()">
+          <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4 14H8v-2h6v2zm2-4H8v-2h8v2zm0-4H8V6h8v2z"/></svg>
+          <span class="more-row-text">
+            <span class="more-row-label">Daily Bible Verse</span>
+            <span class="more-row-sub">Today's Scripture</span>
+          </span>
+          <svg class="more-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
         <button class="more-row" style="background:#6a5a3a;" onclick="showPanel('contact')">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/></svg>
           <span class="more-row-text">
@@ -502,6 +554,26 @@
             <span class="more-row-sub">Coming Soon</span>
           </span>
           <svg class="more-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- DAILY VERSE -->
+    <div class="panel" id="panel-verse">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('more')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          More
+        </button>
+        <div class="panel-title">Daily Verse</div>
+      </div>
+      <div class="verse-body">
+        <div class="verse-quote">&ldquo;</div>
+        <div class="verse-text" id="verse-text">Loading today's verse&hellip;</div>
+        <div class="verse-reference" id="verse-reference"></div>
+        <button class="verse-share-btn" onclick="shareVerse()">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91s-1.31-2.92-2.92-2.92z"/></svg>
+          Share This Verse
         </button>
       </div>
     </div>
@@ -589,6 +661,52 @@
       try { await navigator.share(shareData); } catch (e) {}
     } else {
       window.open(shareData.url, '_blank');
+    }
+  }
+
+  let dailyVerseCache = null;
+
+  async function loadVerses() {
+    if (dailyVerseCache) return dailyVerseCache;
+    const res = await fetch('verses.json');
+    dailyVerseCache = await res.json();
+    return dailyVerseCache;
+  }
+
+  function getDayOfYear() {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 0);
+    const diff = now - start;
+    return Math.floor(diff / 86400000);
+  }
+
+  async function showDailyVerse() {
+    showPanel('verse');
+    try {
+      const verses = await loadVerses();
+      const idx = (getDayOfYear() - 1) % verses.length;
+      const verse = verses[idx];
+      document.getElementById('verse-text').textContent = verse.text;
+      document.getElementById('verse-reference').textContent = verse.reference;
+    } catch (e) {
+      document.getElementById('verse-text').textContent = "Unable to load today's verse. Please try again.";
+    }
+  }
+
+  async function shareVerse() {
+    const verseText = document.getElementById('verse-text').textContent;
+    const verseRef = document.getElementById('verse-reference').textContent;
+    const shareData = {
+      title: 'Daily Bible Verse — Grace Community Church',
+      text: `"${verseText}" — ${verseRef}`,
+      dialogTitle: 'Share This Verse'
+    };
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share) {
+      try { await window.Capacitor.Plugins.Share.share(shareData); } catch (e) {}
+    } else if (navigator.share) {
+      try { await navigator.share(shareData); } catch (e) {}
+    } else {
+      alert(shareData.text);
     }
   }
 
