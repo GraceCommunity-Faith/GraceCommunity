@@ -342,10 +342,13 @@
         <div class="rule"></div>
       </div>
       <div class="grid">
-        <button class="btn c-red" onclick="window.open('https://www.youtube.com/@GraceCommunity911','_blank')">
+        <button class="btn c-red" style="position:relative;" onclick="window.open('https://www.youtube.com/@GraceCommunity911','_blank')">
           <svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.6 5 12 5 12 5s-4.6 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.3.9C6.8 19 12 19 12 19s4.6 0 7-.2c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9l5.5 2.8-5.5 2.7z"/></svg>
           <span class="btn-label">Sermons</span>
           <span class="btn-sub">Watch on YouTube</span>
+          <span onclick="event.stopPropagation(); shareSermons();" style="position:absolute; top:6px; right:6px; padding:5px; background:rgba(0,0,0,0.2); border-radius:50%; display:flex;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91s-1.31-2.92-2.92-2.92z"/></svg>
+          </span>
         </button>
         <button class="btn c-green" onclick="showPanel('prayer')">
           <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
@@ -570,6 +573,22 @@
       const cfg = lazyIframes[name];
       document.getElementById(cfg.id).src = cfg.url;
       loaded[name] = true;
+    }
+  }
+
+  async function shareSermons() {
+    const shareData = {
+      title: 'Grace Community Church Sermons',
+      text: 'Watch sermons from Grace Community Church on YouTube!',
+      url: 'https://www.youtube.com/@GraceCommunity911',
+      dialogTitle: 'Share Sermons'
+    };
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share) {
+      try { await window.Capacitor.Plugins.Share.share(shareData); } catch (e) {}
+    } else if (navigator.share) {
+      try { await navigator.share(shareData); } catch (e) {}
+    } else {
+      window.open(shareData.url, '_blank');
     }
   }
 
