@@ -501,6 +501,16 @@
       margin-left: 0.5rem;
     }
     .nav-announce-btn:hover { background: var(--sand-lt); transform: scale(1.03); }
+    .nav-announce-btn.has-alerts {
+      background: var(--crimson);
+      color: #fff;
+      animation: annPulse 2.5s ease-in-out infinite;
+    }
+    .nav-announce-btn.has-alerts:hover { background: var(--crimson-lt); transform: scale(1.03); }
+    @keyframes annPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(139,26,26,0.5); }
+      50%       { box-shadow: 0 0 0 8px rgba(139,26,26,0); }
+    }
     .ann-badge {
       background: var(--crimson); color: #fff;
       font-size: 0.62rem; font-weight: 700;
@@ -518,7 +528,7 @@
     .ann-overlay.open { display: flex; }
     .ann-modal {
       background: var(--off-white); border-radius: 12px;
-      width: 100%; max-width: 680px; max-height: 85vh; overflow-y: auto;
+      width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto;
       box-shadow: 0 24px 80px rgba(0,0,0,0.35);
       animation: annSlideUp 0.3s ease both;
     }
@@ -1086,6 +1096,7 @@
         var badge = document.getElementById('ann-badge');
         badge.textContent = active.length;
         badge.style.display = 'flex';
+        document.getElementById('ann-open-btn').classList.add('has-alerts');
         var html = '<div class="ann-cards">';
         active.forEach(function(r) {
           var title    = r[1]  || '';
