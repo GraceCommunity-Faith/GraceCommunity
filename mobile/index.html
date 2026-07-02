@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <title>Grace Community Church</title>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; background: #F5EAD7; overflow: hidden; }
+
+    /* ── APP SHELL ── */
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      height: 100dvh;
+    }
+
+    /* ── CONTENT AREA (everything above nav) ── */
+    .content {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── PANELS ── */
+    .panel {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      background: #F5EAD7;
+      overflow: hidden;
+    }
+    .panel.active { display: flex; }
+
+    /* ── HOME PANEL ── */
+    #panel-home .hero {
+      position: relative;
+      flex: 0 0 42%;
+      overflow: hidden;
+    }
+    #panel-home .hero img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      display: block;
+    }
+    #panel-home .hero-fade {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 55%;
+      background: linear-gradient(to bottom, transparent, #F5EAD7);
+    }
+    .identity {
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 16px 4px;
+      margin-top: -50px;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+    .logo-ring {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: #F5EAD7;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.18);
+      display: flex; align-items: center; justify-content: center;
+      padding: 5px;
+    }
+    .logo-ring img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; }
+    .church-name {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 2.6rem; font-weight: 600;
+      letter-spacing: 0.2em; color: #1C3D2A;
+      margin-top: 8px; line-height: 1;
+    }
+    .church-sub {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem; font-weight: 300;
+      letter-spacing: 0.3em; color: #3A7A56;
+      margin-top: 4px; text-transform: uppercase;
+    }
+    .tagline {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.52rem; letter-spacing: 0.08em;
+      color: #6b5a3a; line-height: 2;
+      margin-top: 5px; text-transform: uppercase;
+    }
+    .rule { width: 48px; height: 1px; background: #8a9a6a; margin: 7px auto 0; }
+
+    /* ── BUTTON GRID ── */
+    .grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 10px 12px 8px;
+      min-height: 0;
+    }
+    .btn {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      border-radius: 12px; text-decoration: none;
+      color: white; gap: 5px; border: none; cursor: pointer;
+      transition: opacity 0.15s, transform 0.12s;
+      -webkit-tap-highlight-color: transparent;
+      font-family: inherit;
+    }
+    .btn:active { opacity: 0.8; transform: scale(0.96); }
+    .btn svg { width: 28px; height: 28px; fill: white; }
+    .btn-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .btn-sub {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.52rem; font-weight: 300;
+      opacity: 0.9; margin-top: -3px;
+    }
+    .c-red    { background: #7a1a1a; }
+    .c-green  { background: #2e5a2e; }
+    .c-gold   { background: #7a6a1a; }
+    .c-green2 { background: #3a6a3a; }
+    .c-navy   { background: #1a2e5a; }
+    .c-brown  { background: #6a5a3a; }
+    .c-gray   { background: #5a5a5a; }
+
+    /* ── PANEL HEADER (for inner pages) ── */
+    .panel-header {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      background: #1C3D2A;
+      padding: 12px 16px;
+      padding-top: max(12px, env(safe-area-inset-top));
+      gap: 12px;
+    }
+    .back-btn {
+      background: none; border: none; cursor: pointer;
+      color: white; display: flex; align-items: center; gap: 4px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.1em;
+      -webkit-tap-highlight-color: transparent;
+      padding: 4px 0;
+    }
+    .back-btn svg { width: 18px; height: 18px; fill: white; }
+    .panel-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.2em; color: white;
+      text-transform: uppercase; flex: 1; text-align: center;
+      margin-right: 40px;
+    }
+
+    /* ── IFRAME PANELS ── */
+    .panel-iframe {
+      flex: 1;
+      width: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ── BIBLE PANEL ── */
+    #panel-bibles .bible-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 20px 16px;
+      overflow-y: auto;
+    }
+    .bible-btn {
+      background: white;
+      border: 2px solid #1C3D2A;
+      border-radius: 10px;
+      padding: 16px 20px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #1C3D2A;
+      text-align: center;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s, color 0.15s;
+    }
+    .bible-btn:active { background: #1C3D2A; color: white; }
+
+    /* ── MORE PANEL ── */
+    #panel-more .more-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px 14px;
+      overflow-y: auto;
+    }
+    .more-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 12px;
+      color: white;
+      border: none;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.15s;
+      font-family: inherit;
+      text-align: left;
+    }
+    .more-row:active { opacity: 0.8; }
+    .more-row svg { width: 24px; height: 24px; fill: white; flex-shrink: 0; }
+    .more-row-text { flex: 1; }
+    .more-row-label {
+      font-family: Josefin Sans, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: block;
+    }
+    .more-row-sub {
+      font-family: Josefin Sans, sans-serif;
+      font-size: 0.6rem;
+      font-weight: 300;
+      opacity: 0.85;
+      display: block;
+      margin-top: 2px;
+    }
+    .more-chevron { width: 18px; height: 18px; fill: rgba(255,255,255,0.5); flex-shrink: 0; }
+    /* ── GIVING PANEL ── */
+    #panel-giving .giving-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 24px;
+      gap: 20px;
+      text-align: center;
+    }
+    .giving-logo { font-size: 3rem; }
+    .giving-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.1rem; font-weight: 600;
+      letter-spacing: 0.15em; color: #1C3D2A;
+    }
+    .giving-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem; font-weight: 300;
+      color: #6b5a3a; line-height: 1.8;
+    }
+    .giving-btn {
+      background: #3a6a3a; color: white;
+      border: none; border-radius: 10px;
+      padding: 16px 40px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      cursor: pointer; opacity: 0.5;
+    }
+    .giving-note {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.6rem; color: #8a9a6a;
+      font-style: italic;
+    }
+
+    /* ── ANNOUNCEMENT BADGE (on Events home tile) ── */
+    .btn.has-alert {
+      animation: annPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes annPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(139,26,26,0.55); }
+      50%      { box-shadow: 0 0 0 7px rgba(139,26,26,0); }
+    }
+    .ann-badge-dot {
+      position: absolute; top: -6px; right: -6px;
+      min-width: 20px; height: 20px; padding: 0 4px;
+      border-radius: 10px;
+      background: #8B1A1A; color: #fff;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem; font-weight: 700;
+      display: none; align-items: center; justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.35);
+      z-index: 3;
+    }
+
+    /* ── EVENTS TABS ── */
+    .events-tabs {
+      flex: 0 0 auto;
+      display: flex;
+      background: #1C3D2A;
+    }
+    .events-tab-btn {
+      flex: 1;
+      background: none; border: none; cursor: pointer;
+      color: rgba(255,255,255,0.6);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 10px 4px;
+      border-bottom: 2px solid transparent;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .events-tab-btn.active {
+      color: #fff;
+      border-bottom: 2px solid #3a6a3a;
+    }
+    .events-tab-panel { display: none; flex: 1; min-height: 0; overflow: hidden; }
+    .events-tab-panel.active { display: flex; flex-direction: column; }
+
+    /* ── ANNOUNCEMENT LIST (inside Events panel) ── */
+    .ann-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ann-card {
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #e5dcc8;
+      padding: 14px 16px;
+    }
+    .ann-card-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      letter-spacing: 0.05em; color: #1C3D2A;
+      margin-bottom: 4px;
+    }
+    .ann-card-meta {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem; color: #6b5a3a;
+      margin-bottom: 6px;
+    }
+    .ann-card-desc {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem; font-weight: 300;
+      color: #3D2E1E; line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .ann-card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .ann-btn-signup, .ann-btn-info {
+      display: inline-block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      text-decoration: none;
+      padding: 8px 14px; border-radius: 8px;
+    }
+    .ann-btn-signup { background: #3a6a3a; color: #fff; }
+    .ann-btn-info { background: #f0e6cf; color: #1C3D2A; }
+    .ann-empty {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; gap: 10px; padding: 30px;
+      font-family: 'Josefin Sans', sans-serif;
+      color: #8a9a6a; font-size: 0.75rem;
+    }
+    .ann-empty a { color: #3a6a3a; }
+
+    /* ── DAILY VERSE PANEL ── */
+    #panel-verse .verse-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 28px;
+      gap: 14px;
+      text-align: center;
+      overflow-y: auto;
+    }
+    .verse-quote {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 3rem;
+      color: #7a6a1a;
+      line-height: 0.4;
+    }
+    .verse-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.05rem; font-weight: 300;
+      color: #1C3D2A; line-height: 1.6;
+      font-style: italic;
+    }
+    .verse-reference {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.15em; color: #7a6a1a;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .verse-share-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: #1C3D2A; color: white;
+      border: none; border-radius: 10px;
+      padding: 14px 26px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; margin-top: 8px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .verse-share-btn:active { opacity: 0.8; }
+
+    /* ── DAILY CHALLENGE PANEL ── */
+    #panel-challenge .challenge-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 16px 24px;
+      gap: 12px;
+      overflow-y: auto;
+    }
+    .challenge-date {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem; color: #6b5a3a;
+      text-align: center; letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .challenge-meta {
+      display: flex; justify-content: space-between;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem; font-weight: 600;
+      color: #3a2a5a;
+    }
+    .challenge-dots { display: flex; justify-content: center; gap: 8px; margin: 4px 0; }
+    .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #cbb98a; background: #F5EAD7; display: inline-block; }
+    .dot.dot-active { background: #3a2a5a; border-color: #3a2a5a; }
+    .dot.dot-correct { background: #2e5a2e; border-color: #2e5a2e; }
+    .dot.dot-wrong { background: #7a1a1a; border-color: #7a1a1a; }
+    .challenge-card {
+      background: white;
+      border: 2px solid #3a2a5a;
+      border-radius: 14px;
+      padding: 20px 16px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .challenge-question {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.05rem; font-weight: 600;
+      color: #1C3D2A; text-align: center; line-height: 1.4;
+    }
+    .challenge-choices { display: flex; flex-direction: column; gap: 10px; }
+    .choice-btn {
+      background: white; border: 2px solid #3a2a5a;
+      border-radius: 10px; padding: 12px 14px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      color: #3a2a5a; text-align: left; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .choice-btn:active { background: #3a2a5a; color: white; }
+    .choice-btn.correct { background: #e3f3e3; border-color: #2e5a2e; color: #2e5a2e; }
+    .choice-btn.incorrect { background: #f9e3e3; border-color: #7a1a1a; color: #7a1a1a; }
+    .choice-btn.disabled { cursor: default; opacity: 0.95; }
+    .challenge-feedback {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      text-align: center; padding: 8px; border-radius: 8px;
+    }
+    .challenge-feedback.good { color: #2e5a2e; }
+    .challenge-feedback.bad { color: #7a1a1a; }
+    .challenge-reference {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem; color: #6b5a3a;
+      text-align: center; font-style: italic;
+      cursor: pointer; padding: 4px;
+    }
+    .challenge-next-btn {
+      background: #3a2a5a; color: white;
+      border: none; border-radius: 10px;
+      padding: 14px; font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .challenge-next-btn:active { opacity: 0.85; }
+    .challenge-complete {
+      background: white; border: 2px solid #3a2a5a;
+      border-radius: 14px; padding: 30px 20px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      text-align: center;
+    }
+    .complete-icon { font-size: 2.6rem; }
+    .complete-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.1rem; font-weight: 600;
+      color: #3a2a5a; letter-spacing: 0.05em;
+    }
+    .complete-score, .complete-streak {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.95rem; color: #1C3D2A; font-weight: 600;
+    }
+    .complete-note {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem; color: #8a9a6a; font-style: italic;
+      margin-top: 4px;
+    }
+    .challenge-share-btn {
+      margin-top: 10px;
+      background: #1C3D2A; color: white;
+      border: none; border-radius: 10px;
+      padding: 14px 26px; font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .challenge-promo {
+      text-align: center; padding: 12px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem; color: #3a2a5a;
+      text-decoration: underline; cursor: pointer;
+    }
+
+    /* ── CONTACT PANEL ── */
+    #panel-contact .contact-body {
+      flex: 1; overflow-y: auto;
+      display: flex; flex-direction: column;
+    }
+    #panel-contact iframe { flex: 0 0 55%; border: none; }
+    .contact-info {
+      padding: 16px 20px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .contact-row {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .contact-row svg { width: 20px; height: 20px; fill: #1C3D2A; flex-shrink: 0; }
+    .contact-row a, .contact-row span {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem; color: #1C3D2A;
+      text-decoration: none; letter-spacing: 0.05em;
+    }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: #1C3D2A;
+      padding: 16px 20px;
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+    }
+    .nav-item {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 4px;
+      color: white; background: none; border: none;
+      cursor: pointer;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      -webkit-tap-highlight-color: transparent;
+      opacity: 0.7; transition: opacity 0.15s;
+    }
+    .nav-item.active { opacity: 1; }
+    .nav-item svg { width: 24px; height: 24px; fill: white; }
+    .dots { display: flex; gap: 4px; margin-bottom: 2px; }
+    .dots span { width: 5px; height: 5px; background: rgba(255,255,255,0.5); border-radius: 50%; }
+    .dots span:first-child { background: white; }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ═══ CONTENT AREA ═══ -->
+  <div class="content">
+
+    <!-- HOME -->
+    <div class="panel active" id="panel-home">
+      <div class="hero">
+        <img src="images/background.jpg" alt="Grace Community Church"/>
+        <div class="hero-fade"></div>
+      </div>
+      <div class="identity">
+        <div class="logo-ring"><img src="images/logo.png" alt="Logo"/></div>
+        <div class="church-name">GRACE</div>
+        <div class="church-sub">Community Church</div>
+        <div class="tagline">Led by the Spirit · Centered on Christ · Committed to People</div>
+        <div class="rule"></div>
+      </div>
+      <div class="grid">
+        <button class="btn c-red" style="position:relative;" onclick="window.open('https://www.youtube.com/@GraceCommunity911','_blank')">
+          <svg viewBox="0 0 24 24"><path d="M21.8 8s-.2-1.4-.8-2c-.8-.8-1.6-.8-2-.9C16.6 5 12 5 12 5s-4.6 0-7 .1c-.4.1-1.2.1-2 .9-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.5c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.8 1.8.8 2.3.9C6.8 19 12 19 12 19s4.6 0 7-.2c.4-.1 1.2-.1 2-.9.6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.5C22 9.6 21.8 8 21.8 8zM9.8 14.5V9l5.5 2.8-5.5 2.7z"/></svg>
+          <span class="btn-label">Sermons</span>
+          <span class="btn-sub">Watch on YouTube</span>
+          <span onclick="event.stopPropagation(); shareSermons();" style="position:absolute; top:6px; right:6px; padding:5px; background:rgba(0,0,0,0.2); border-radius:50%; display:flex;">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91s-1.31-2.92-2.92-2.92z"/></svg>
+          </span>
+        </button>
+        <button class="btn c-green" onclick="showPanel('prayer')">
+          <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+          <span class="btn-label">Prayer</span>
+          <span class="btn-sub">Request Prayer</span>
+        </button>
+        <button class="btn c-gold" onclick="showPanel('bibles')">
+          <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4 14H8v-2h6v2zm2-4H8v-2h8v2zm0-4H8V6h8v2z"/></svg>
+          <span class="btn-label">Bibles</span>
+          <span class="btn-sub">Read Scripture</span>
+        </button>
+        <button class="btn c-green2" id="events-home-btn" style="position:relative;" onclick="showPanel('events')">
+          <svg viewBox="0 0 24 24"><path d="M19 3h-1V1h-2v2H8V1H6v2H5C3.9 3 3 3.9 3 5v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>
+          <span class="btn-label">Events</span>
+          <span class="btn-sub">See Upcoming</span>
+          <span class="ann-badge-dot" id="events-badge"></span>
+        </button>
+        <button class="btn c-navy" onclick="window.open('https://www.facebook.com/profile.php?id=61589186043240','_blank')">
+          <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          <span class="btn-label">Facebook</span>
+          <span class="btn-sub">Connect with Us</span>
+        </button>
+        <button class="btn c-brown" onclick="showPanel('giving')">
+          <svg viewBox="0 0 24 24"><path d="M12 21.7C5.8 16.8 2 13.4 2 9.5 2 6.4 4.4 4 7.5 4c1.8 0 3.6.9 4.5 2.3C13 4.9 14.7 4 16.5 4 19.6 4 22 6.4 22 9.5c0 3.9-3.8 7.3-10 12.2z"/></svg>
+          <span class="btn-label">Giving</span>
+          <span class="btn-sub">Ways to Give</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SERMONS -->
+    <div class="panel" id="panel-sermons">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('home')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          Back
+        </button>
+        <div class="panel-title">Sermons</div>
+      </div>
+      <iframe class="panel-iframe" src="https://www.youtube.com/@GraceCommunity911" allowfullscreen></iframe>
+    </div>
+
+    <!-- PRAYER -->
+    <div class="panel" id="panel-prayer">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('home')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          Back
+        </button>
+        <div class="panel-title">Prayer Request</div>
+      </div>
+      <iframe class="panel-iframe" id="prayer-frame" src="about:blank"></iframe>
+    </div>
+
+    <!-- BIBLES -->
+    <div class="panel" id="panel-bibles">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('home')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          Back
+        </button>
+        <div class="panel-title">Bible</div>
+      </div>
+      <div class="bible-list">
+        <button class="bible-btn" onclick="showBible('https://www.biblegateway.com/versions/King-James-Version-KJV-Bible/#booklist')">King James Version (KJV)</button>
+        <button class="bible-btn" onclick="showBible('https://www.biblegateway.com/versions/New-King-James-Version-NKJV-Bible/#booklist')">New King James Version (NKJV)</button>
+        <button class="bible-btn" onclick="showBible('https://www.biblegateway.com/versions/New-International-Version-NIV-Bible/#booklist')">New International Version (NIV)</button>
+        <button class="bible-btn" onclick="showBible('https://www.biblegateway.com/versions/New-Living-Translation-NLT-Bible/#booklist')">New Living Translation (NLT)</button>
+        <button class="bible-btn" onclick="showBible('https://www.biblegateway.com/versions/Nueva-Version-Internacional-Biblia-NVI/#booklist')">Spanish Bible (NVI)</button>
+      </div>
+    </div>
+
+    <!-- BIBLE READER -->
+    <div class="panel" id="panel-bible-reader">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('bibles')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          Bibles
+        </button>
+        <div class="panel-title" id="bible-reader-title">Bible</div>
+      </div>
+      <iframe class="panel-iframe" id="bible-reader-frame" src="about:blank"></iframe>
+    </div>
+
+    <!-- EVENTS -->
+    <div class="panel" id="panel-events">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('home')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          Back
+        </button>
+        <div class="panel-title">Events</div>
+      </div>
+      <div class="events-tabs">
+        <button class="events-tab-btn active" id="events-tab-ann-btn" onclick="switchEventsTab('ann')">📣 Announcements</button>
+        <button class="events-tab-btn" id="events-tab-cal-btn" onclick="switchEventsTab('cal')">📅 Calendar</button>
+      </div>
+      <div class="events-tab-panel active" id="events-tab-ann">
+        <div class="ann-list" id="events-ann-body">
+          <div class="ann-empty">Loading announcements&hellip;</div>
+        </div>
+      </div>
+      <div class="events-tab-panel" id="events-tab-cal">
+        <iframe class="panel-iframe" id="events-frame" src="about:blank"></iframe>
+      </div>
+    </div>
+
+    <!-- FACEBOOK -->
+    <div class="panel" id="panel-facebook">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('home')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          Back
+        </button>
+        <div class="panel-title">Facebook</div>
+      </div>
+      <iframe class="panel-iframe" id="facebook-frame" src="about:blank"></iframe>
+    </div>
+
+    <!-- GIVING -->
+    <div class="panel" id="panel-giving">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('home')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          Back
+        </button>
+        <div class="panel-title">Giving</div>
+      </div>
+      <div class="giving-body">
+        <div class="giving-logo">🌼</div>
+        <div class="giving-title">WAYS TO GIVE</div>
+        <div class="giving-text">
+          Thank you for your faithful generosity.<br/>
+          You may give by mailing a check or money order payable to<br/>
+          <strong>Grace Community Church</strong><br/>
+          to:<br/>
+          7040 US Route 1<br/>
+          St. Augustine, Florida 32095
+        </div>
+        <div class="giving-note">Online giving is coming soon directly in this app.</div>
+      </div>
+    </div>
+
+    <!-- MORE -->
+    <div class="panel" id="panel-more">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('home')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          Back
+        </button>
+        <div class="panel-title">More</div>
+      </div>
+      <div class="more-list">
+        <button class="more-row" style="background:#7a6a1a;" onclick="showDailyVerse()">
+          <svg viewBox="0 0 24 24"><path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-4 14H8v-2h6v2zm2-4H8v-2h8v2zm0-4H8V6h8v2z"/></svg>
+          <span class="more-row-text">
+            <span class="more-row-label">Daily Bible Verse</span>
+            <span class="more-row-sub">Today's Scripture</span>
+          </span>
+          <svg class="more-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+        <button class="more-row" style="background:#3a2a5a;" onclick="openChallenge()">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+          <span class="more-row-text">
+            <span class="more-row-label">Daily Bible Challenge</span>
+            <span class="more-row-sub">Test Your Knowledge</span>
+          </span>
+          <svg class="more-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+        <button class="more-row" style="background:#6a5a3a;" onclick="showPanel('contact')">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/></svg>
+          <span class="more-row-text">
+            <span class="more-row-label">Contact</span>
+            <span class="more-row-sub">Info &amp; Map</span>
+          </span>
+          <svg class="more-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+        <button class="more-row" style="background:#3a5a3a;" disabled>
+          <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          <span class="more-row-text">
+            <span class="more-row-label">Ministries</span>
+            <span class="more-row-sub">Coming Soon</span>
+          </span>
+          <svg class="more-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- DAILY VERSE -->
+    <div class="panel" id="panel-verse">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('more')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          More
+        </button>
+        <div class="panel-title">Daily Verse</div>
+      </div>
+      <div class="verse-body">
+        <div class="verse-quote">&ldquo;</div>
+        <div class="verse-text" id="verse-text">Loading today's verse&hellip;</div>
+        <div class="verse-reference" id="verse-reference"></div>
+        <button class="verse-share-btn" onclick="shareVerse()">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91s-1.31-2.92-2.92-2.92z"/></svg>
+          Share This Verse
+        </button>
+      </div>
+    </div>
+
+    <!-- DAILY CHALLENGE -->
+    <div class="panel" id="panel-challenge">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('more')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          More
+        </button>
+        <div class="panel-title">Daily Challenge</div>
+      </div>
+      <div class="challenge-body" id="challenge-body">
+        <div class="challenge-date">Loading&hellip;</div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="panel" id="panel-contact">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('more')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          More
+        </button>
+        <div class="panel-title">Contact</div>
+      </div>
+      <div class="contact-body">
+        <iframe src="https://www.google.com/maps?q=7040+US+Route+1,+St.+Augustine,+FL+32095&output=embed" style="flex:0 0 55%;border:none;"></iframe>
+        <div class="contact-info">
+          <div class="contact-row">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5c-1.4 0-2.5-1.1-2.5-2.5S10.6 6.5 12 6.5s2.5 1.1 2.5 2.5S13.4 11.5 12 11.5z"/></svg>
+            <span>7040 US Route 1 · St. Augustine, FL 32095</span>
+          </div>
+          <div class="contact-row">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            <a href="mailto:info@GraceCommunity.Faith">info@GraceCommunity.Faith</a>
+          </div>
+          <div class="contact-row">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+            <a href="https://gracecommunity.faith">GraceCommunity.Faith</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end content -->
+
+  <!-- ═══ BOTTOM NAV ═══ -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" id="nav-home" onclick="showPanel('home')">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      Home
+    </button>
+    <button class="nav-item" id="nav-more" onclick="showPanel('more')">
+      <div class="dots"><span></span><span></span><span></span></div>
+      More
+    </button>
+  </nav>
+
+</div>
+
+<script>
+  // Lazy-load URLs — only load iframe when panel first opened
+  const lazyIframes = {
+    'prayer':   { id: 'prayer-frame',   url: 'https://tally.so/r/Me8ljg' },
+    'facebook': { id: 'facebook-frame', url: 'https://www.facebook.com/profile.php?id=61589186043240' },
+  };
+  const eventsCalUrl = 'https://calendar.google.com/calendar/embed?src=gracecommunitychurch911%40gmail.com&ctz=America%2FNew_York';
+  const loaded = {};
+
+  function showPanel(name) {
+    // Hide all panels
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    // Show target
+    document.getElementById('panel-' + name).classList.add('active');
+    // Update nav highlight
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if (name === 'home') document.getElementById('nav-home').classList.add('active');
+    if (name === 'more') document.getElementById('nav-more').classList.add('active');
+    // Lazy load iframes
+    if (lazyIframes[name] && !loaded[name]) {
+      const cfg = lazyIframes[name];
+      document.getElementById(cfg.id).src = cfg.url;
+      loaded[name] = true;
+    }
+    if (name === 'events') {
+      loadEventsAnnouncements();
+    }
+  }
+
+  // ── ANNOUNCEMENTS (shared source with website) ──────────────────
+  const ANN_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vS8a5pkcJTb1fDZRuQ6FBCXBofFVfCzhaAy-yUtC5dbKT_e12kIoW5iv8zvt3NsiS4C6D4sDMlTHNr-/pub?gid=1106368818&single=true&output=csv';
+  const ANN_SEEN_KEY = 'gc_ann_seen_ids';
+
+  function parseAnnCSV(text) {
+    var rows = []; var inQuote = false;
+    var row = []; var cell = '';
+    for (var i = 0; i < text.length; i++) {
+      var c = text[i];
+      if (c === '"') { inQuote = !inQuote; }
+      else if (c === ',' && !inQuote) { row.push(cell.trim()); cell = ''; }
+      else if ((c === '\n' || c === '\r') && !inQuote) {
+        if (cell || row.length) { row.push(cell.trim()); rows.push(row); }
+        row = []; cell = '';
+        if (c === '\r' && text[i+1] === '\n') i++;
+      } else { cell += c; }
+    }
+    if (cell || row.length) { row.push(cell.trim()); rows.push(row); }
+    return rows;
+  }
+
+  function annDriveDirectUrl(url) {
+    if (!url) return '';
+    var match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if (match) return 'https://drive.google.com/thumbnail?id=' + match[1] + '&sz=w800';
+    match = url.match(/id=([a-zA-Z0-9_-]+)/);
+    if (match) return 'https://drive.google.com/thumbnail?id=' + match[1] + '&sz=w800';
+    return url;
+  }
+
+  function getSeenAnnIds() {
+    try { return JSON.parse(localStorage.getItem(ANN_SEEN_KEY) || '[]'); }
+    catch (e) { return []; }
+  }
+  function saveSeenAnnIds(ids) {
+    try { localStorage.setItem(ANN_SEEN_KEY, JSON.stringify(ids)); } catch (e) {}
+  }
+
+  let annActiveRows = null; // cached parsed active rows: {id, title, desc, date, time, loc, img1, img2, img3, signup, tallyUrl, contact}
+
+  function fetchAnnouncements() {
+    return fetch(ANN_CSV_URL)
+      .then(r => r.text())
+      .then(csv => {
+        var rows = parseAnnCSV(csv);
+        if (rows.length < 2) return [];
+        // Col order: 0=Timestamp,1=Title,2=Description,3=Date,4=Time,
+        // 5=Location,6=Img1,7=Img2,8=Img3,9=SignUp,10=TallyURL,11=Contact,12=Active
+        return rows.slice(1)
+          .filter(r => r[12] && r[12].toLowerCase() === 'yes')
+          .map(r => ({
+            id: (r[0] || '') + '|' + (r[1] || ''),
+            title: r[1] || '', desc: r[2] || '', date: r[3] || '', time: r[4] || '',
+            loc: r[5] || '', signup: r[9] || 'No', tallyUrl: r[10] || '', contact: r[11] || ''
+          }));
+      })
+      .catch(() => []);
+  }
+
+  function updateEventsBadge(activeRows) {
+    const seen = getSeenAnnIds();
+    const newOnes = activeRows.filter(r => seen.indexOf(r.id) === -1);
+    const btn = document.getElementById('events-home-btn');
+    const badge = document.getElementById('events-badge');
+    if (newOnes.length > 0) {
+      badge.textContent = newOnes.length;
+      badge.style.display = 'flex';
+      btn.classList.add('has-alert');
+    } else {
+      badge.style.display = 'none';
+      btn.classList.remove('has-alert');
+    }
+  }
+
+  function checkAnnouncementsBadge() {
+    fetchAnnouncements().then(rows => {
+      annActiveRows = rows;
+      updateEventsBadge(rows);
+    });
+  }
+
+  function renderAnnCards(rows) {
+    const body = document.getElementById('events-ann-body');
+    if (!rows.length) {
+      body.innerHTML = '<div class="ann-empty"><p style="font-size:2rem;">&#128203;</p><p>No special announcements right now.</p><p>Check the Calendar tab for our regularly scheduled services.</p></div>';
+      return;
+    }
+    var html = '';
+    rows.forEach(r => {
+      var meta = '';
+      if (r.date) meta += '<span>&#128197; ' + escapeHtml(r.date) + '</span>';
+      if (r.time) meta += '<span>&#128336; ' + escapeHtml(r.time) + '</span>';
+      if (r.loc)  meta += '<span>&#128205; ' + escapeHtml(r.loc) + '</span>';
+      var actions = '';
+      if (r.signup !== 'No' && r.tallyUrl) {
+        var label = r.signup.indexOf('RSVP') > -1 ? 'RSVP' : 'Register Now';
+        actions += '<a href="' + r.tallyUrl + '" target="_blank" class="ann-btn-signup">' + label + '</a>';
+      }
+      if (r.contact) {
+        var href = r.contact.indexOf('@') > -1 ? 'mailto:' + r.contact : (r.contact.indexOf('http') > -1 ? r.contact : 'tel:' + r.contact);
+        actions += '<a href="' + href + '" class="ann-btn-info">Contact / More Info</a>';
+      }
+      html += '<div class="ann-card">' +
+        '<div class="ann-card-title">' + escapeHtml(r.title) + '</div>' +
+        (meta ? '<div class="ann-card-meta">' + meta + '</div>' : '') +
+        (r.desc ? '<div class="ann-card-desc">' + escapeHtml(r.desc) + '</div>' : '') +
+        (actions ? '<div class="ann-card-actions">' + actions + '</div>' : '') +
+        '</div>';
+    });
+    body.innerHTML = html;
+  }
+
+  function loadEventsAnnouncements() {
+    fetchAnnouncements().then(rows => {
+      annActiveRows = rows;
+      renderAnnCards(rows);
+      // Mark all currently active announcements as seen, clear the badge
+      const ids = rows.map(r => r.id);
+      saveSeenAnnIds(ids);
+      updateEventsBadge(rows);
+    });
+  }
+
+  function switchEventsTab(tab) {
+    document.getElementById('events-tab-ann').classList.toggle('active', tab === 'ann');
+    document.getElementById('events-tab-cal').classList.toggle('active', tab === 'cal');
+    document.getElementById('events-tab-ann-btn').classList.toggle('active', tab === 'ann');
+    document.getElementById('events-tab-cal-btn').classList.toggle('active', tab === 'cal');
+    if (tab === 'cal' && !loaded['events']) {
+      document.getElementById('events-frame').src = eventsCalUrl;
+      loaded['events'] = true;
+    }
+  }
+
+  // Check for new announcements on app launch (badge only, no fetch of calendar)
+  checkAnnouncementsBadge();
+  // ── END ANNOUNCEMENTS ────────────────────────────────────────────
+
+  async function shareSermons() {
+    const shareData = {
+      title: 'Grace Community Church Sermons',
+      text: 'Watch sermons from Grace Community Church on YouTube!',
+      url: 'https://www.youtube.com/@GraceCommunity911',
+      dialogTitle: 'Share Sermons'
+    };
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share) {
+      try { await window.Capacitor.Plugins.Share.share(shareData); } catch (e) {}
+    } else if (navigator.share) {
+      try { await navigator.share(shareData); } catch (e) {}
+    } else {
+      window.open(shareData.url, '_blank');
+    }
+  }
+
+  let dailyVerseCache = null;
+
+  async function loadVerses() {
+    if (dailyVerseCache) return dailyVerseCache;
+    const res = await fetch('verses.json');
+    dailyVerseCache = await res.json();
+    return dailyVerseCache;
+  }
+
+  function getDayOfYear() {
+    const now = new Date();
+    const start = new Date(now.getFullYear(), 0, 0);
+    const diff = now - start;
+    return Math.floor(diff / 86400000);
+  }
+
+  async function showDailyVerse() {
+    showPanel('verse');
+    try {
+      const verses = await loadVerses();
+      const idx = (getDayOfYear() - 1) % verses.length;
+      const verse = verses[idx];
+      document.getElementById('verse-text').textContent = verse.text;
+      document.getElementById('verse-reference').textContent = verse.reference;
+    } catch (e) {
+      document.getElementById('verse-text').textContent = "Unable to load today's verse. Please try again.";
+    }
+  }
+
+  async function shareVerse() {
+    const verseText = document.getElementById('verse-text').textContent;
+    const verseRef = document.getElementById('verse-reference').textContent;
+    const shareData = {
+      title: 'Daily Bible Verse — Grace Community Church',
+      text: `"${verseText}" — ${verseRef}`,
+      dialogTitle: 'Share This Verse'
+    };
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share) {
+      try { await window.Capacitor.Plugins.Share.share(shareData); } catch (e) {}
+    } else if (navigator.share) {
+      try { await navigator.share(shareData); } catch (e) {}
+    } else {
+      alert(shareData.text);
+    }
+  }
+
+  // ── DAILY CHALLENGE ──
+  const DAILY_COUNT = 5;
+  let challengePool = null;
+  let todayQuestions = null;
+  let currentIndex = 0;
+  let challengeScore = 0;
+  let answeredLog = [];
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function getDateKey(offsetDays) {
+    const d = new Date();
+    if (offsetDays) d.setDate(d.getDate() + offsetDays);
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  function formatDateLong() {
+    return new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  function seededRandom(seed) {
+    let t = seed;
+    return function () {
+      t |= 0; t = (t + 0x6D2B79F5) | 0;
+      let r = Math.imul(t ^ (t >>> 15), 1 | t);
+      r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+      return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function pickTodayQuestions(pool, n) {
+    const now = new Date();
+    const seed = now.getFullYear() * 1000 + getDayOfYear();
+    const rand = seededRandom(seed);
+    const used = new Set();
+    const picks = [];
+    while (picks.length < n) {
+      const i = Math.floor(rand() * pool.length);
+      if (!used.has(i)) { used.add(i); picks.push(pool[i]); }
+    }
+    return picks;
+  }
+
+  async function loadChallengePool() {
+    if (challengePool) return challengePool;
+    const res = await fetch('challenge-questions.json');
+    challengePool = await res.json();
+    return challengePool;
+  }
+
+  async function openChallenge() {
+    showPanel('challenge');
+    const todayKey = getDateKey(0);
+    const completedDate = localStorage.getItem('gc_challenge_date');
+    if (completedDate === todayKey) {
+      const score = parseInt(localStorage.getItem('gc_challenge_score') || '0', 10);
+      const streak = parseInt(localStorage.getItem('gc_challenge_streak') || '0', 10);
+      renderChallengeCompletion(score, streak, true);
+      return;
+    }
+    try {
+      const pool = await loadChallengePool();
+      todayQuestions = pickTodayQuestions(pool, DAILY_COUNT);
+      currentIndex = 0;
+      challengeScore = 0;
+      answeredLog = [];
+      renderChallengeQuestion();
+    } catch (e) {
+      document.getElementById('challenge-body').innerHTML = '<div class="challenge-date">Unable to load today\'s challenge. Please try again.</div>';
+    }
+  }
+
+  function renderChallengeDots(currentCorrectOverride) {
+    return todayQuestions.map((_, i) => {
+      if (i < currentIndex) return answeredLog[i] ? 'dot-correct' : 'dot-wrong';
+      if (i === currentIndex && currentCorrectOverride !== undefined) return currentCorrectOverride ? 'dot-correct' : 'dot-wrong';
+      if (i === currentIndex) return 'dot-active';
+      return '';
+    });
+  }
+
+  function renderChallengeQuestion() {
+    const q = todayQuestions[currentIndex];
+    const dots = renderChallengeDots();
+    document.getElementById('challenge-body').innerHTML = `
+      <div class="challenge-date">${formatDateLong()}</div>
+      <div class="challenge-meta"><span>Question ${currentIndex + 1} of ${todayQuestions.length}</span><span>Score: ${challengeScore}</span></div>
+      <div class="challenge-dots">${dots.map(c => `<span class="dot ${c}"></span>`).join('')}</div>
+      <div class="challenge-card">
+        <div class="challenge-question">${escapeHtml(q.question)}</div>
+        <div class="challenge-choices">
+          ${q.choices.map((c, i) => `<button class="choice-btn" onclick="selectChallengeChoice(${i})">${String.fromCharCode(65 + i)}) ${escapeHtml(c)}</button>`).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function selectChallengeChoice(i) {
+    const q = todayQuestions[currentIndex];
+    const correct = i === q.answer;
+    answeredLog[currentIndex] = correct;
+    if (correct) challengeScore++;
+    const dots = renderChallengeDots(correct);
+    document.getElementById('challenge-body').innerHTML = `
+      <div class="challenge-date">${formatDateLong()}</div>
+      <div class="challenge-meta"><span>Question ${currentIndex + 1} of ${todayQuestions.length}</span><span>Score: ${challengeScore}</span></div>
+      <div class="challenge-dots">${dots.map(c => `<span class="dot ${c}"></span>`).join('')}</div>
+      <div class="challenge-card">
+        <div class="challenge-question">${escapeHtml(q.question)}</div>
+        <div class="challenge-choices">
+          ${q.choices.map((c, idx) => {
+            let cls = 'choice-btn disabled';
+            if (idx === q.answer) cls += ' correct';
+            else if (idx === i) cls += ' incorrect';
+            return `<button class="${cls}" disabled>${String.fromCharCode(65 + idx)}) ${escapeHtml(c)}</button>`;
+          }).join('')}
+        </div>
+        <div class="challenge-feedback ${correct ? 'good' : 'bad'}">${correct ? '✅ Correct!' : '❌ Correct answer: ' + escapeHtml(q.choices[q.answer])}</div>
+        <div class="challenge-reference" id="challenge-verse-toggle" data-ref="${escapeHtml(q.reference)}" data-verse="${escapeHtml(q.verseText)}" data-revealed="0" onclick="toggleChallengeVerse()">📖 ${escapeHtml(q.reference)} — tap to see verse</div>
+        <button class="challenge-next-btn" onclick="nextChallengeQuestion()">${currentIndex + 1 < todayQuestions.length ? 'Next Question' : 'See Results'}</button>
+      </div>
+    `;
+  }
+
+  function toggleChallengeVerse() {
+    const el = document.getElementById('challenge-verse-toggle');
+    if (!el) return;
+    if (el.dataset.revealed === '1') {
+      el.textContent = '📖 ' + el.dataset.ref + ' — tap to see verse';
+      el.dataset.revealed = '0';
+    } else {
+      el.textContent = '"' + el.dataset.verse + '" — ' + el.dataset.ref;
+      el.dataset.revealed = '1';
+    }
+  }
+
+  function nextChallengeQuestion() {
+    currentIndex++;
+    if (currentIndex >= todayQuestions.length) {
+      finishChallenge();
+    } else {
+      renderChallengeQuestion();
+    }
+  }
+
+  function finishChallenge() {
+    const todayKey = getDateKey(0);
+    const yesterdayKey = getDateKey(-1);
+    const lastDate = localStorage.getItem('gc_challenge_date');
+    let streak = parseInt(localStorage.getItem('gc_challenge_streak') || '0', 10);
+    if (lastDate === yesterdayKey) {
+      streak = streak + 1;
+    } else if (lastDate !== todayKey) {
+      streak = 1;
+    }
+    localStorage.setItem('gc_challenge_date', todayKey);
+    localStorage.setItem('gc_challenge_score', String(challengeScore));
+    localStorage.setItem('gc_challenge_streak', String(streak));
+    renderChallengeCompletion(challengeScore, streak, false);
+  }
+
+  function renderChallengeCompletion(score, streak, alreadyDone) {
+    document.getElementById('challenge-body').innerHTML = `
+      <div class="challenge-date">${formatDateLong()}</div>
+      <div class="challenge-complete">
+        <div class="complete-icon">🏆</div>
+        <div class="complete-title">${alreadyDone ? "Today's Challenge Complete" : 'Daily Complete!'}</div>
+        <div class="complete-score">Score: ${score} / ${DAILY_COUNT}</div>
+        <div class="complete-streak">🔥 Daily Streak: ${streak}</div>
+        <div class="complete-note">Come back tomorrow for 5 new questions</div>
+        <button class="challenge-share-btn" onclick="shareChallenge(${score}, ${streak})">Share My Results</button>
+      </div>
+      <div class="challenge-promo" onclick="window.open('https://practicalfaith.net/quiz_links.html','_blank')">🎯 For more Bible Quiz fun, check out our Quiz Apps →</div>
+    `;
+  }
+
+  async function shareChallenge(score, streak) {
+    const shareData = {
+      title: 'Grace Community Church Bible Challenge',
+      text: `I scored ${score}/${DAILY_COUNT} on today's Bible Challenge at Grace Community Church! 🔥 Streak: ${streak} day${streak === 1 ? '' : 's'}`,
+      dialogTitle: 'Share My Results'
+    };
+    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share) {
+      try { await window.Capacitor.Plugins.Share.share(shareData); } catch (e) {}
+    } else if (navigator.share) {
+      try { await navigator.share(shareData); } catch (e) {}
+    } else {
+      alert(shareData.text);
+    }
+  }
+
+  function showBible(url) {
+    const titles = {
+      'KJV': 'King James Version',
+      'NKJV': 'New King James',
+      'NIV': 'New International',
+      'NLT': 'New Living Translation',
+      'NVI': 'Spanish Bible (NVI)'
+    };
+    // Find which title matches
+    let title = 'Bible';
+    for (const [key, val] of Object.entries(titles)) {
+      if (url.includes(key)) { title = val; break; }
+    }
+    document.getElementById('bible-reader-title').textContent = title;
+    document.getElementById('bible-reader-frame').src = url;
+    showPanel('bible-reader');
+  }
+</script>
+
+</body>
+</html>
