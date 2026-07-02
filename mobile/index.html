@@ -237,6 +237,112 @@
       margin-top: 2px;
     }
     .more-chevron { width: 18px; height: 18px; fill: rgba(255,255,255,0.5); flex-shrink: 0; }
+
+    /* ── MINISTRIES PANEL ── */
+    #panel-ministries .ministries-grid {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 14px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      align-content: start;
+    }
+    .ministry-card {
+      background: white;
+      border: 2px solid #1C3D2A;
+      border-radius: 12px;
+      padding: 18px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background 0.15s;
+    }
+    .ministry-card:active { background: #F5EAD7; }
+    .ministry-card-icon {
+      width: 42px; height: 42px;
+      border-radius: 50%;
+      background: #1C3D2A;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .ministry-card-icon svg { width: 22px; height: 22px; fill: white; }
+    .ministry-card-name {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-align: center;
+      color: #1C3D2A;
+    }
+    /* ── MINISTRY DETAIL MODAL ── */
+    .ministry-modal {
+      position: fixed; inset: 0;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 50;
+    }
+    .ministry-modal.active { display: flex; }
+    .ministry-modal-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.5);
+    }
+    .ministry-modal-card {
+      position: relative;
+      background: #F5EAD7;
+      width: 100%;
+      max-height: 82vh;
+      border-radius: 20px 20px 0 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: mm-up 0.2s ease-out;
+    }
+    @keyframes mm-up { from { transform: translateY(30px); opacity:0; } to { transform: translateY(0); opacity:1; } }
+    .ministry-modal-header {
+      background: #1C3D2A;
+      padding: 16px 50px 16px 20px;
+      padding-top: max(16px, env(safe-area-inset-top));
+      position: relative;
+      flex: 0 0 auto;
+    }
+    .ministry-modal-header h2 {
+      font-family: 'Josefin Sans', sans-serif;
+      color: white;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .ministry-modal-close {
+      position: absolute; top: 12px; right: 14px;
+      background: rgba(255,255,255,0.15);
+      border: none; color: white;
+      width: 28px; height: 28px; border-radius: 50%;
+      font-size: 1.1rem; line-height: 1;
+      cursor: pointer;
+    }
+    .ministry-modal-body {
+      padding: 18px 20px 30px;
+      overflow-y: auto;
+    }
+    .ministry-modal-body img {
+      width: 100%; border-radius: 12px; margin-bottom: 14px; display: block;
+    }
+    .ministry-modal-body p {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem; color: #333; line-height: 1.5; margin-bottom: 10px;
+    }
+    .ministry-modal-body h4 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #1C3D2A; margin: 14px 0 4px;
+    }
+    .ministry-modal-body a { color: #1C3D2A; }
+
     /* ── GIVING PANEL ── */
     #panel-giving .giving-body {
       flex: 1;
@@ -777,11 +883,11 @@
           </span>
           <svg class="more-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
         </button>
-        <button class="more-row" style="background:#3a5a3a;" disabled>
+        <button class="more-row" style="background:#3a5a3a;" onclick="showPanel('ministries')">
           <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
           <span class="more-row-text">
             <span class="more-row-label">Ministries</span>
-            <span class="more-row-sub">Coming Soon</span>
+            <span class="more-row-sub">Find Your Place</span>
           </span>
           <svg class="more-chevron" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
         </button>
@@ -850,7 +956,33 @@
       </div>
     </div>
 
+    <!-- MINISTRIES -->
+    <div class="panel" id="panel-ministries">
+      <div class="panel-header">
+        <button class="back-btn" onclick="showPanel('more')">
+          <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          More
+        </button>
+        <div class="panel-title">Ministries</div>
+      </div>
+      <div class="ministries-grid" id="ministriesGrid">
+        <div style="grid-column:1/-1;text-align:center;padding:30px;opacity:0.6;font-family:'Josefin Sans',sans-serif;font-size:0.75rem;">Loading ministries…</div>
+      </div>
+    </div>
+
   </div><!-- end content -->
+
+  <!-- MINISTRY DETAIL MODAL -->
+  <div class="ministry-modal" id="ministryModal">
+    <div class="ministry-modal-overlay" onclick="closeMinistryModal()"></div>
+    <div class="ministry-modal-card">
+      <div class="ministry-modal-header">
+        <h2 id="ministryModalTitle">Ministry</h2>
+        <button class="ministry-modal-close" onclick="closeMinistryModal()">&times;</button>
+      </div>
+      <div class="ministry-modal-body" id="ministryModalBody"></div>
+    </div>
+  </div>
 
   <!-- ═══ BOTTOM NAV ═══ -->
   <nav class="bottom-nav">
@@ -892,6 +1024,9 @@
     }
     if (name === 'events') {
       loadEventsAnnouncements();
+    }
+    if (name === 'ministries' && !ministriesLoaded) {
+      loadMinistries();
     }
   }
 
@@ -1105,6 +1240,92 @@
 
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // ── MINISTRIES (Google Sheet CSV → cards → detail modal) ──────────────
+  const MINISTRY_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSm9bDPAiNtEgD2qh63VOpBaOrqlwt3fZZcpuN6F_0q9abjy2M-PfDSTyWFn8-A-7wuDreiSpZHCXb9/pub?gid=1052060554&single=true&output=csv';
+  const MINISTRY_ICON_SVG = '<svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>';
+
+  let ministriesLoaded = false;
+  let ministryRows = [];
+
+  function ministryDriveUrl(raw) {
+    if (!raw) return '';
+    const m = raw.match(/[-\w]{25,}/);
+    return m ? 'https://lh3.googleusercontent.com/d/' + m[0] : raw;
+  }
+
+  function loadMinistries() {
+    const grid = document.getElementById('ministriesGrid');
+    fetch(MINISTRY_CSV_URL)
+      .then(r => r.text())
+      .then(csv => {
+        const rows = parseAnnCSV(csv); // reuse the quote-safe CSV parser
+        if (rows.length < 2) throw new Error('empty');
+        const headers = rows[0].map(h => h.toLowerCase().trim());
+        const col = n => headers.indexOf(n);
+        const iName   = col('ministry name');
+        const iAbout  = col('about');
+        const iWhen   = col('when we meet');
+        const iLoc    = col('location');
+        const iLeader = col('leader / contact name');
+        const iEmail  = col('contact email (public)');
+        const iImgs   = [
+          col('image link 1 (main / featured photo)'),
+          col('image link 2'), col('image link 3'),
+          col('image link 4'), col('image link 5')
+        ];
+
+        ministryRows = rows.slice(1)
+          .filter(r => r[iName] && r[iName].trim())
+          .map((r, idx) => ({
+            idx,
+            name: r[iName] || '', about: r[iAbout] || '',
+            when: r[iWhen] || '', loc: r[iLoc] || '',
+            leader: r[iLeader] || '', email: r[iEmail] || '',
+            imgs: iImgs.map(i => ministryDriveUrl(r[i])).filter(Boolean)
+          }));
+
+        if (!ministryRows.length) throw new Error('no rows');
+
+        ministriesLoaded = true;
+        grid.innerHTML = ministryRows.map((m, i) =>
+          '<div class="ministry-card" onclick="openMinistryModal(' + i + ')">' +
+            '<div class="ministry-card-icon">' + MINISTRY_ICON_SVG + '</div>' +
+            '<span class="ministry-card-name">' + escapeHtml(m.name) + '</span>' +
+          '</div>'
+        ).join('');
+      })
+      .catch(() => {
+        ministriesLoaded = false;
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px 20px;opacity:0.75;font-family:\'Josefin Sans\',sans-serif;">' +
+          '<p style="font-size:0.8rem;margin-bottom:10px;">We\'re updating our ministries list.</p>' +
+          '<p style="font-size:0.75rem;">Reach out anytime — <a href="mailto:info@GraceCommunity.Faith" style="color:#1C3D2A;">info@GraceCommunity.Faith</a></p>' +
+        '</div>';
+      });
+  }
+
+  function openMinistryModal(idx) {
+    const m = ministryRows[idx];
+    if (!m) return;
+    document.getElementById('ministryModalTitle').textContent = m.name;
+
+    let html = '';
+    if (m.imgs.length) {
+      html += m.imgs.map(src => '<img src="' + src + '" onerror="this.style.display=\'none\'">').join('');
+    }
+    if (m.about) html += '<p>' + escapeHtml(m.about) + '</p>';
+    if (m.when)  html += '<h4>When We Meet</h4><p>' + escapeHtml(m.when) + '</p>';
+    if (m.loc)   html += '<h4>Location</h4><p>' + escapeHtml(m.loc) + '</p>';
+    if (m.leader)html += '<h4>Leader</h4><p>' + escapeHtml(m.leader) + '</p>';
+    if (m.email) html += '<h4>Contact</h4><p><a href="mailto:' + escapeHtml(m.email) + '">' + escapeHtml(m.email) + '</a></p>';
+
+    document.getElementById('ministryModalBody').innerHTML = html;
+    document.getElementById('ministryModal').classList.add('active');
+  }
+
+  function closeMinistryModal() {
+    document.getElementById('ministryModal').classList.remove('active');
   }
 
   function getDateKey(offsetDays) {
