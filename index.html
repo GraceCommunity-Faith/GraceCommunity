@@ -101,6 +101,28 @@
     }
     .nav-cta:hover { background: var(--crimson-lt); }
 
+    /* ─── MOBILE APP DROPDOWN ─── */
+    .nav-dropdown { position: relative; }
+    .dd-caret { font-size: 0.55rem; margin-left: 0.35rem; vertical-align: middle; }
+    .dd-menu {
+      display: none;
+      position: absolute; top: 100%; right: 0;
+      padding-top: 8px; /* invisible bridge so hover survives the gap */
+      z-index: 300;
+    }
+    .nav-dropdown:hover .dd-menu,
+    .nav-dropdown:focus-within .dd-menu { display: block; }
+    .dd-menu-inner {
+      background: var(--cream);
+      border: 1px solid rgba(42,92,63,0.18);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(42,92,63,0.2);
+      padding: 0.4rem;
+      min-width: 140px;
+      display: flex; flex-direction: column; gap: 0.1rem;
+    }
+    .dd-menu-inner a { display: block; }
+
     /* ─── HERO ─── */
     #hero {
       position: relative; height: 100vh; min-height: 640px;
@@ -621,6 +643,15 @@
     <li><a href="#events">Events</a></li>
     <li><a href="#prayer">Prayer</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li class="nav-dropdown">
+      <a href="#" class="dd-toggle" onclick="return false;">Mobile App<span class="dd-caret">&#9662;</span></a>
+      <div class="dd-menu">
+        <div class="dd-menu-inner">
+          <a href="https://apps.apple.com/app/id6786360721" target="_blank" rel="noopener">Apple</a>
+          <a href="https://play.google.com/store/apps/details?id=com.petrachurch.app" target="_blank" rel="noopener">Google</a>
+        </div>
+      </div>
+    </li>
   </ul>
   <button class="nav-announce-btn" id="ann-open-btn" onclick="openAnnouncements()">
     📣 Announcements
@@ -641,6 +672,8 @@
   <a href="#events"      onclick="closeDrawer()">Events</a>
   <a href="#prayer"      onclick="closeDrawer()" class="m-prayer">Prayer</a>
   <a href="#contact"     onclick="closeDrawer()" class="m-contact">Contact</a>
+  <a href="https://apps.apple.com/app/id6786360721" target="_blank" rel="noopener" onclick="closeDrawer()">Mobile App &mdash; Apple</a>
+  <a href="https://play.google.com/store/apps/details?id=com.petrachurch.app" target="_blank" rel="noopener" onclick="closeDrawer()">Mobile App &mdash; Google</a>
 </div>
 
 <!-- HERO -->
