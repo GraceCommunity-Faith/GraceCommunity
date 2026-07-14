@@ -450,7 +450,6 @@
       .nav-logo-float img { width: 100px; }
       .nav-links { display: none; }
       .nav-burger { display: flex; }
-      .nav-announce-btn { margin-left: 112px; font-size: 0.66rem; padding: 0.5rem 0.9rem; }
       nav { padding: 0 1rem; min-height: 64px; }
       .mobile-drawer { top: 64px; }
 
@@ -518,6 +517,11 @@
       border-radius: 50%; width: 18px; height: 18px;
       display: flex; align-items: center; justify-content: center;
       line-height: 1;
+    }
+    /* Mobile: push Announcements button clear of the floating logo.
+       Must stay BELOW the .nav-announce-btn base rules above, or it gets overridden. */
+    @media (max-width: 768px) {
+      .nav-announce-btn { margin-left: 112px; font-size: 0.66rem; padding: 0.5rem 0.9rem; }
     }
 
     /* ─── ANNOUNCEMENTS MODAL ─── */
