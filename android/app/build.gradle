@@ -7,8 +7,8 @@ android {
         applicationId "faith.gracecommunity.app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -18,8 +18,7 @@ android {
     }
     signingConfigs {
         release {
-            storeFile file("/Users/home/Sync/Rev/grace-release-key.jks")
-            storePassword "Grace2026"
+         storeFile file("/Users/home/Sync/Rev/Grace Keystore/grace-release-key.jks")
             keyAlias "grace"
             keyPassword "Grace2026"
         }

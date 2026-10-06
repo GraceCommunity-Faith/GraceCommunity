@@ -648,7 +648,7 @@
       <div class="dd-menu">
         <div class="dd-menu-inner">
           <a href="https://apps.apple.com/app/id6786360721" target="_blank" rel="noopener">Apple</a>
-          <a href="https://play.google.com/store/apps/details?id=com.petrachurch.app" target="_blank" rel="noopener">Google</a>
+          <a href="https://play.google.com/store/apps/details?id=faith.gracecommunity.app" target="_blank" rel="noopener">Google</a>
         </div>
       </div>
     </li>
@@ -673,7 +673,7 @@
   <a href="#prayer"      onclick="closeDrawer()" class="m-prayer">Prayer</a>
   <a href="#contact"     onclick="closeDrawer()" class="m-contact">Contact</a>
   <a href="https://apps.apple.com/app/id6786360721" target="_blank" rel="noopener" onclick="closeDrawer()">Mobile App &mdash; Apple</a>
-  <a href="https://play.google.com/store/apps/details?id=com.petrachurch.app" target="_blank" rel="noopener" onclick="closeDrawer()">Mobile App &mdash; Google</a>
+  <a href="https://play.google.com/store/apps/details?id=faith.gracecommunity.app" target="_blank" rel="noopener" onclick="closeDrawer()">Mobile App &mdash; Google</a>
 </div>
 
 <!-- HERO -->
@@ -852,7 +852,7 @@
             Most Recent Message — Grace Community Church
           </span>
         </div>
-        <a href="https://www.youtube.com/@GraceCommunity911/playlists"
+        <a href="https://www.youtube.com/@GraceCommunity911/videos"
            target="_blank" rel="noopener"
            style="font-family:'Josefin Sans',sans-serif;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--sand);opacity:0.7;text-decoration:none;transition:opacity 0.2s;"
            onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.7">
@@ -867,6 +867,7 @@
           Always plays the most recently uploaded video first — same approach as PracticalFaith.net
         -->
         <iframe
+          id="yt-player"
           style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;"
           src="https://www.youtube.com/embed/videoseries?list=UUAomf8wp2djju62_xoftbBw&rel=0"
           title="Grace Community Church – Latest Sermon"
@@ -874,6 +875,12 @@
           allowfullscreen>
         </iframe>
       </div>
+    </div>
+
+    <!-- Recent messages grid (filled from the channel feed; hidden if it can't load) -->
+    <div id="yt-grid-wrap" style="display:none;margin-top:2rem;">
+      <div style="font-family:'Josefin Sans',sans-serif;font-weight:300;font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--pine);margin-bottom:1rem;">Recent Messages</div>
+      <div id="yt-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;"></div>
     </div>
 
     <!-- Footer row -->
@@ -1028,7 +1035,7 @@
         </p>
         <div style="text-align:left;">
           <button
-            data-tally-open="RG81NP"
+            data-tally-open="eqzKJq"
             data-tally-emoji-text="✉️"
             data-tally-emoji-animation="wave"
             style="font-family:'Josefin Sans',sans-serif;font-weight:400;font-size:0.75rem;
@@ -1237,6 +1244,39 @@
     el.style.transition = 'opacity 0.7s ease, transform 0.7s ease';
     fadeObserver.observe(el);
   });
+</script>
+<script>
+// Recent sermons grid from the YouTube channel feed
+(function () {
+  var CHANNEL_ID = 'UCAomf8wp2djju62_xoftbBw';
+  var feed = 'https://www.youtube.com/feeds/videos.xml?channel_id=' + CHANNEL_ID;
+  var api  = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed);
+  var wrap = document.getElementById('yt-grid-wrap');
+  var grid = document.getElementById('yt-grid');
+  var player = document.getElementById('yt-player');
+  if (!wrap || !grid || !player) return;
+  function esc(t){ var d=document.createElement('div'); d.textContent=t||''; return d.innerHTML; }
+  fetch(api).then(function(r){ return r.json(); }).then(function(d){
+    if (!d || d.status !== 'ok' || !d.items || !d.items.length) return;
+    d.items.slice(0, 9).forEach(function(it){
+      var m = (it.link || it.guid || '').match(/[?&]v=([\w-]{11})|yt:video:([\w-]{11})/);
+      var id = m && (m[1] || m[2]);
+      if (!id) return;
+      var a = document.createElement('a');
+      a.href = 'https://www.youtube.com/watch?v=' + id;
+      a.style.cssText = 'display:block;text-decoration:none;background:#fff;border-radius:3px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);';
+      a.innerHTML = '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover;">' +
+        '<div style="padding:0.7rem 0.9rem;font-family:\'Crimson Pro\',serif;font-size:0.95rem;line-height:1.35;color:var(--charcoal);">' + esc(it.title) + '</div>';
+      a.addEventListener('click', function(e){
+        e.preventDefault();
+        player.src = 'https://www.youtube.com/embed/' + id + '?autoplay=1&rel=0';
+        player.scrollIntoView({behavior:'smooth', block:'center'});
+      });
+      grid.appendChild(a);
+    });
+    if (grid.children.length) wrap.style.display = 'block';
+  }).catch(function(){});
+})();
 </script>
 </body>
 </html>
