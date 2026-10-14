@@ -372,7 +372,13 @@
       font-family: 'Josefin Sans', sans-serif;
       font-size: 0.8rem; font-weight: 600;
       letter-spacing: 0.15em; text-transform: uppercase;
-      cursor: pointer; opacity: 0.5;
+      cursor: pointer;
+    }
+    .giving-btn:active { opacity: 0.85; }
+    .giving-divider {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.15em;
+      color: #8a9a6a; text-transform: uppercase;
     }
     .giving-note {
       font-family: 'Josefin Sans', sans-serif;
@@ -838,14 +844,18 @@
         <div class="giving-logo">🌼</div>
         <div class="giving-title">WAYS TO GIVE</div>
         <div class="giving-text">
-          Thank you for your faithful generosity.<br/>
-          You may give by mailing a check or money order payable to<br/>
+          Thank you for your faithful generosity.
+        </div>
+        <button class="giving-btn" onclick="window.open('https://give.tithe.ly/?formId=26c02e27-21b7-4541-9c58-c05a4b8b1dfa','_blank')">Give Online</button>
+        <div class="giving-divider">or give by mail</div>
+        <div class="giving-text">
+          You may mail a check or money order payable to<br/>
           <strong>Grace Community Church</strong><br/>
           to:<br/>
           7040 US Route 1<br/>
           St. Augustine, Florida 32095
         </div>
-        <div class="giving-note">Online giving is coming soon directly in this app.</div>
+        <div class="giving-note">Online giving is securely processed by Tithe.ly.</div>
       </div>
     </div>
 
