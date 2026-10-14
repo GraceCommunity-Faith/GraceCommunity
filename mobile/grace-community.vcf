@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:;Grace Community Church;;;
+FN:Grace Community Church
+ORG:Grace Community Church
+TEL;TYPE=WORK,VOICE:+19048088558
+EMAIL;TYPE=WORK:info@GraceCommunity.Faith
+URL:https://gracecommunity.faith
+ADR;TYPE=WORK:;;7040 US Route 1;St. Augustine;FL;32095;USA
+END:VCARD
