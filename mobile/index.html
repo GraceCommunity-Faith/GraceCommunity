@@ -657,7 +657,6 @@
       text-decoration: none; letter-spacing: 0.05em;
     }
 
-    #panel-contact iframe.contact-form-frame { flex: 0 0 640px; width: 100%; border: none; }
     .contact-btn {
       display: block; text-align: center;
       font-family: 'Josefin Sans', sans-serif; font-weight: 600;
@@ -666,11 +665,6 @@
       padding: 12px 16px; margin-top: 4px; cursor: pointer; width: 100%;
     }
     .contact-btn:active { opacity: 0.85; }
-    .contact-form-title {
-      font-family: 'Josefin Sans', sans-serif; font-weight: 600;
-      font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
-      color: #1C3D2A; padding: 8px 20px 0;
-    }
 
     /* ── BOTTOM NAV ── */
     .bottom-nav {
@@ -699,6 +693,7 @@
     .dots span { width: 5px; height: 5px; background: rgba(255,255,255,0.5); border-radius: 50%; }
     .dots span:first-child { background: white; }
   </style>
+  <script async src="https://tally.so/widgets/embed.js"></script>
 </head>
 <body>
 <div class="app">
@@ -982,9 +977,8 @@
             <a href="https://gracecommunity.faith">GraceCommunity.Faith</a>
           </div>
           <button class="contact-btn" onclick="window.open('grace-community.vcf','_blank')">Add to Contacts</button>
+          <button class="contact-btn" data-tally-open="eqzKJq" data-tally-emoji-text="✉️" data-tally-emoji-animation="wave">Send Us a Message</button>
         </div>
-        <div class="contact-form-title">Send Us a Message</div>
-        <iframe class="contact-form-frame" id="contact-form-frame" src="about:blank"></iframe>
       </div>
     </div>
 
@@ -1034,7 +1028,6 @@
   // Lazy-load URLs — only load iframe when panel first opened
   const lazyIframes = {
     'prayer':   { id: 'prayer-frame',   url: 'https://tally.so/r/Me8ljg' },
-    'contact':  { id: 'contact-form-frame', url: 'https://tally.so/r/eqzKJq' },
     'facebook': { id: 'facebook-frame', url: 'https://www.facebook.com/profile.php?id=61589186043240' },
   };
   const eventsCalUrl = 'https://calendar.google.com/calendar/embed?src=gracecommunitychurch911%40gmail.com&ctz=America%2FNew_York';
